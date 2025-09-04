@@ -28,10 +28,8 @@ int	open_file(char *file_name, t_model model, int is_rdonly)
 
 void	execute_cmd(char **cmdv, char **envp, t_model model)
 {
-	int		i;
 	char	*path;
 
-	i = 0;
 	path = find_path(cmdv, envp);
 	if (!path)
 		ft_error_exit(cmdv[0], ": command not found\n", model, 127);

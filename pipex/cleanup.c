@@ -62,9 +62,6 @@ void	clean_up_resources(t_model model)
 
 void	ft_error_exit(char *str, char *str2, t_model model, int status)
 {
-	int	i;
-
-	i = 0;
 	if (str == NULL)
 	{
 		write(2, "pipex: ", 7);

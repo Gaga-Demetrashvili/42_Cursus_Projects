@@ -8,19 +8,6 @@ static int	is_operator_char(char c)
 	return (c == '|' || c == '&' || c == '<' || c == '>');
 }
 
-static t_token	*new_token(t_token_type type, char *value)
-{
-	t_token	*tok;
-
-	tok = malloc(sizeof(t_token));
-	if (!tok)
-		return (NULL);
-	tok->type = type;
-	tok->value = value;
-	tok->next = NULL;
-	return (tok);
-}
-
 // Should heredoc be handled in this part?
 t_token	*tokenize(const char *input)
 {

@@ -6,7 +6,7 @@
 /*   By: gdemetra <gdemetra@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/09/24 21:43:59 by gdemetra          #+#    #+#             */
-/*   Updated: 2025/09/24 21:45:24 by gdemetra         ###   ########.fr       */
+/*   Updated: 2025/10/08 20:19:33 by gdemetra         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -23,7 +23,7 @@ t_ast	*create_command_node(char **argv, char *infile, char *outfile,
 	node = malloc(sizeof(t_ast));
 	if (!node)
 		return (NULL);
-	node->type = AST_COMMAND;
+	node->type = TOKEN_WORD;
 	node->argv = argv;
 	node->left = NULL;
 	node->right = NULL;
@@ -44,7 +44,7 @@ t_ast	*create_and_node(t_ast *left, t_ast *right)
 	node = malloc(sizeof(t_ast));
 	if (!node)
 		return (NULL);
-	node->type = AST_AND;
+	node->type = TOKEN_AND;
 	node->argv = NULL;
 	node->left = left;
 	node->right = right;
@@ -65,7 +65,7 @@ t_ast	*create_or_node(t_ast *left, t_ast *right)
 	node = malloc(sizeof(t_ast));
 	if (!node)
 		return (NULL);
-	node->type = AST_OR;
+	node->type = TOKEN_OR;
 	node->argv = NULL;
 	node->left = left;
 	node->right = right;
@@ -85,7 +85,7 @@ t_ast	*create_pipe_node(t_ast *left, t_ast *right)
 	if (!node)
 		return (NULL);
 
-	node->type = AST_PIPE;
+	node->type = TOKEN_PIPE;
 	node->argv = NULL;
 	node->left = left;
 	node->right = right;

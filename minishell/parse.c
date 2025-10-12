@@ -1,6 +1,4 @@
 #include "minishell_types.h"
-#include <stdlib.h>
-#include <string.h>
 
 // Helper: count tokens for argv
 static int	count_args(t_token *cur)

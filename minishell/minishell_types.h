@@ -6,12 +6,16 @@
 /*   By: gdemetra <gdemetra@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/09/24 21:22:14 by gdemetra          #+#    #+#             */
-/*   Updated: 2025/10/05 20:25:36 by gdemetra         ###   ########.fr       */
+/*   Updated: 2025/10/12 21:15:30 by gdemetra         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "ft_gb_collect.h"
+#include <readline/history.h>
+#include <readline/readline.h>
+#include <stdio.h>
 #include <stdlib.h>
+#include <string.h>
 
 typedef enum e_token_type
 {
@@ -53,5 +57,15 @@ t_ast				*create_command_node(char **argv, char *infile,
 						char *outfile, int append, char *heredoc);
 t_ast				*create_and_node(t_ast *left, t_ast *right);
 t_ast				*create_or_node(t_ast *left, t_ast *right);
-t_ast				*create_redir_node(t_token_type type, char *file_or_delim,
-						t_token_type *command);
+t_ast				*create_pipe_node(t_ast *left, t_ast *right);
+
+t_token				*new_token(t_token_type type, char *value);
+
+t_token				*tokenize(const char *input);
+t_token				*expand(t_token *tokens);
+t_ast				*parse(t_token *tokens);
+t_token				*expand_wildcards(t_token *tokens);
+int					execute(t_ast *node);
+
+void				print_ast(const t_ast *node, int depth);
+void				print_token_lst(t_token *token);

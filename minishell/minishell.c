@@ -1,4 +1,17 @@
 #include "minishell_types.h"
+#include <readline/history.h>
+#include <readline/readline.h>
+#include <signal.h>
+#include <unistd.h>
+
+static void	sigint_prompt(int sig)
+{
+	(void)sig;
+	write(STDOUT_FILENO, "\n", 1);
+	rl_on_new_line();
+	rl_replace_line("", 0);
+	rl_redisplay();
+}
 
 int	main(int ac, char **av)
 {
@@ -9,39 +22,33 @@ int	main(int ac, char **av)
 	t_token	*tokens;
 	int		val;
 
-	// while (1)
-	// {
-	// 	input = readline("minishell: ");
-	// 	if (input)
-	// 	{
-	// 		add_history(input);
-	// 		t_token *tokens = tokenize(input); // You need to implement this
-	// 		t_ast *tree = parse(tokens);       // You need to implement this
-	// 		execute(tree);                     // You need to implement this
-	// 		free_ast(tree);
-	// 		free_tokens(tokens);
-	// 		free(input);
-	// 	}
-	// }
 	(void)ac;
 	(void)av;
+	signal(SIGINT, sigint_prompt);
+	signal(SIGQUIT, SIG_IGN);
+	val = 0;
 	while (1)
 	{
 		input = readline("minishell: ");
-		if (input)
+		if (!input)
 		{
-			add_history(input);
-			tokens = tokenize(input);
-			// You need to implement this
-			// print_token_lst(tokens);
-			// env variable expansion
-			expanded_tokens = expand(tokens);
-			// wildcard expansion
-			globbed_tokens = expand_wildcards(expanded_tokens);
-			tree = parse(globbed_tokens);
-			val = execute(tree);
-			// print_ast(tree, 0);
+			write(STDOUT_FILENO, "exit\n", 5);
+			break ;
 		}
+		if (input[0] == '\0')
+		{
+			free(input);
+			continue ;
+		}
+		add_history(input);
+		tokens = tokenize(input);
+		expanded_tokens = expand(tokens, val);
+		globbed_tokens = expand_wildcards(expanded_tokens);
+		tree = parse(globbed_tokens);
+		val = execute(tree);
+		// print_ast(tree, 0);
+		free(input);
+		// TODO: free tokens/AST if you add free functions
 	}
 	return (0);
 }

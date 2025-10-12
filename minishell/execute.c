@@ -6,13 +6,14 @@
 /*   By: gdemetra <gdemetra@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/10/12 19:59:49 by gdemetra          #+#    #+#             */
-/*   Updated: 2025/10/12 21:32:23 by gdemetra         ###   ########.fr       */
+/*   Updated: 2025/10/12 21:51:21 by gdemetra         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "minishell_types.h"
 #include <fcntl.h>
 #include <readline/readline.h>
+#include <signal.h>
 #include <stdio.h>
 #include <stdlib.h>
 #include <string.h>
@@ -70,6 +71,9 @@ static void	run_command_child(t_ast *node, int heredoc_fd, int stdin_pre_set)
 	int	fd;
 	int	flags;
 
+	// Children: default signals so Ctrl+C/Ctrl+\ affect them
+	signal(SIGINT, SIG_DFL);
+	signal(SIGQUIT, SIG_DFL);
 	// STDIN setup
 	if (!stdin_pre_set)
 	{

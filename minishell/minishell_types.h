@@ -6,7 +6,7 @@
 /*   By: gdemetra <gdemetra@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/09/24 21:22:14 by gdemetra          #+#    #+#             */
-/*   Updated: 2025/10/12 21:15:30 by gdemetra         ###   ########.fr       */
+/*   Updated: 2025/10/12 21:48:37 by gdemetra         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -32,25 +32,33 @@ typedef enum e_token_type
 	TOKEN_RPAREN, // )
 }					t_token_type;
 
+typedef enum e_quote_type
+{
+	QUOTE_NONE = 0,
+	QUOTE_SINGLE = 1,
+	QUOTE_DOUBLE = 2
+}					t_quote_type;
+
 typedef struct s_token
 {
 	t_token_type	type;
 	char			*value;
+	int quote; // QUOTE_NONE | QUOTE_SINGLE | QUOTE_DOUBLE
 	struct s_token	*next;
 }					t_token;
 
 typedef struct s_ast
 {
-	t_token_type type; // Command, AND, OR, redirection
-	char **argv;       // Only used for commands
+	t_token_type	type;
+	char			**argv;
 
 	struct s_ast	*left;
 	struct s_ast	*right;
 
-	char *infile;  // Only for commands with <
-	char *outfile; // Only for commands with > or >>
-	int append;    // 1 if >>, 0 if >
-	char *heredoc; // Only for commands with <<
+	char			*infile;
+	char			*outfile;
+	int				append;
+	char			*heredoc;
 }					t_ast;
 
 t_ast				*create_command_node(char **argv, char *infile,
@@ -62,7 +70,7 @@ t_ast				*create_pipe_node(t_ast *left, t_ast *right);
 t_token				*new_token(t_token_type type, char *value);
 
 t_token				*tokenize(const char *input);
-t_token				*expand(t_token *tokens);
+t_token				*expand(t_token *tokens, int last_status);
 t_ast				*parse(t_token *tokens);
 t_token				*expand_wildcards(t_token *tokens);
 int					execute(t_ast *node);

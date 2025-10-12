@@ -107,6 +107,10 @@ t_token	*tokenize(const char *input)
 				i++;
 			char *val = strndup(input + start, i - start);
 			t_token *tok = new_token(TOKEN_WORD, val);
+			if (quote == '\'')
+				tok->quote = QUOTE_SINGLE;
+			else
+				tok->quote = QUOTE_DOUBLE;
 			if (!head)
 				head = tok;
 			else
@@ -124,6 +128,7 @@ t_token	*tokenize(const char *input)
 			i++;
 		char *val = strndup(input + start, i - start);
 		t_token *tok = new_token(TOKEN_WORD, val);
+		tok->quote = QUOTE_NONE;
 		if (!head)
 			head = tok;
 		else

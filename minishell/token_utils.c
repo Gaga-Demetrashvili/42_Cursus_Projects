@@ -6,7 +6,7 @@
 /*   By: gdemetra <gdemetra@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/10/12 19:42:52 by gdemetra          #+#    #+#             */
-/*   Updated: 2025/10/12 19:43:22 by gdemetra         ###   ########.fr       */
+/*   Updated: 2025/10/12 21:49:05 by gdemetra         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -21,6 +21,7 @@ t_token	*new_token(t_token_type type, char *value)
 		return (NULL);
 	tok->type = type;
 	tok->value = value;
+	tok->quote = QUOTE_NONE;
 	tok->next = NULL;
 	return (tok);
 }

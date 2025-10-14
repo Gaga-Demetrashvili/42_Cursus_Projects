@@ -6,7 +6,7 @@
 /*   By: gdemetra <gdemetra@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/09/24 21:22:14 by gdemetra          #+#    #+#             */
-/*   Updated: 2025/10/12 21:48:37 by gdemetra         ###   ########.fr       */
+/*   Updated: 2025/10/14 20:37:23 by gdemetra         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -47,6 +47,12 @@ typedef struct s_token
 	struct s_token	*next;
 }					t_token;
 
+typedef struct s_tokctx
+{
+	t_token			*head;
+	t_token			*tail;
+}					t_tokctx;
+
 typedef struct s_ast
 {
 	t_token_type	type;
@@ -67,7 +73,8 @@ t_ast				*create_and_node(t_ast *left, t_ast *right);
 t_ast				*create_or_node(t_ast *left, t_ast *right);
 t_ast				*create_pipe_node(t_ast *left, t_ast *right);
 
-t_token				*new_token(t_token_type type, char *value);
+t_token				*new_token(t_token_type type, char *value,
+						t_quote_type quote);
 
 t_token				*tokenize(const char *input);
 t_token				*expand(t_token *tokens, int last_status);

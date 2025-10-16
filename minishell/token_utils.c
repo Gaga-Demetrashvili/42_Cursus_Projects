@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   token_utils.c                                      :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: gdemetra <gdemetra@student.42.fr>          +#+  +:+       +#+        */
+/*   By: gaga <gaga@student.42.fr>                  +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/10/12 19:42:52 by gdemetra          #+#    #+#             */
-/*   Updated: 2025/10/14 20:37:10 by gdemetra         ###   ########.fr       */
+/*   Updated: 2025/10/16 22:44:33 by gaga             ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -24,4 +24,18 @@ t_token	*new_token(t_token_type type, char *value, t_quote_type quote)
 	tok->quote = quote;
 	tok->next = NULL;
 	return (tok);
+}
+
+void	token_chainer(t_tokctx *ctx, t_token_type type, char *value,
+		t_quote_type quote)
+{
+	t_token	*tok;
+
+	tok = new_token(type, value, quote);
+	tok->next = NULL;
+	if (!ctx->head)
+		ctx->head = tok;
+	else
+		ctx->tail->next = tok;
+	ctx->tail = tok;
 }

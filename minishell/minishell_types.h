@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   minishell_types.h                                  :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: gdemetra <gdemetra@student.42.fr>          +#+  +:+       +#+        */
+/*   By: gaga <gaga@student.42.fr>                  +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/09/24 21:22:14 by gdemetra          #+#    #+#             */
-/*   Updated: 2025/10/14 20:37:23 by gdemetra         ###   ########.fr       */
+/*   Updated: 2025/10/16 23:39:05 by gaga             ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -75,12 +75,22 @@ t_ast				*create_pipe_node(t_ast *left, t_ast *right);
 
 t_token				*new_token(t_token_type type, char *value,
 						t_quote_type quote);
+void				token_chainer(t_tokctx *ctx, t_token_type type, char *value,
+						t_quote_type quote);
 
 t_token				*tokenize(const char *input);
 t_token				*expand(t_token *tokens, int last_status);
 t_ast				*parse(t_token *tokens);
 t_token				*expand_wildcards(t_token *tokens);
 int					execute(t_ast *node);
+
+// tokenizer helpers
+int					handle_operator_case(t_tokctx *ctx, const char *input,
+						size_t *i);
+int					handle_parentheses_case(t_tokctx *ctx, const char *input,
+						size_t *i);
+int					handle_quote_case(t_tokctx *ctx, const char *input,
+						size_t *i, size_t len);
 
 void				print_ast(const t_ast *node, int depth);
 void				print_token_lst(t_token *token);

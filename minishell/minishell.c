@@ -1,3 +1,15 @@
+/* ************************************************************************** */
+/*                                                                            */
+/*                                                        :::      ::::::::   */
+/*   minishell.c                                        :+:      :+:    :+:   */
+/*                                                    +:+ +:+         +:+     */
+/*   By: gdemetra <gdemetra@student.42.fr>          +#+  +:+       +#+        */
+/*                                                +#+#+#+#+#+   +#+           */
+/*   Created: 2025/10/17 00:00:00 by gdemetra          #+#    #+#             */
+/*   Updated: 2025/10/17 00:00:00 by gdemetra         ###   ########.fr       */
+/*                                                                            */
+/* ************************************************************************** */
+
 #include "minishell_types.h"
 #include <readline/history.h>
 #include <readline/readline.h>
@@ -13,13 +25,33 @@ static void	sigint_prompt(int sig)
 	rl_redisplay();
 }
 
+static int	process_input(char *input, int last_val)
+{
+	t_token	*tokens;
+	t_token	*expanded;
+	t_token	*globbed;
+	t_ast	*tree;
+
+	tokens = tokenize(input);
+	expanded = expand(tokens, last_val);
+	globbed = expand_wildcards(expanded);
+	tree = parse(globbed);
+	return (execute(tree));
+}
+
+static int	handle_empty_input(char *input)
+{
+	if (input[0] == '\0')
+	{
+		free(input);
+		return (1);
+	}
+	return (0);
+}
+
 int	main(int ac, char **av)
 {
 	char	*input;
-	t_ast	*tree;
-	t_token	*expanded_tokens;
-	t_token	*globbed_tokens;
-	t_token	*tokens;
 	int		val;
 
 	(void)ac;
@@ -35,22 +67,11 @@ int	main(int ac, char **av)
 			write(STDOUT_FILENO, "exit\n", 5);
 			break ;
 		}
-		if (input[0] == '\0')
-		{
-			free(input);
+		if (handle_empty_input(input))
 			continue ;
-		}
 		add_history(input);
-		tokens = tokenize(input);
-		// print_token_lst(tokens);
-		// return (0);
-		expanded_tokens = expand(tokens, val);
-		globbed_tokens = expand_wildcards(expanded_tokens);
-		tree = parse(globbed_tokens);
-		val = execute(tree);
-		// print_ast(tree, 0);
+		val = process_input(input, val);
 		free(input);
-		// TODO: free tokens/AST if you add free functions
 	}
 	return (0);
 }

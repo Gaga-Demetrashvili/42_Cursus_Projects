@@ -15,35 +15,6 @@
 #include <stdlib.h>
 #include <string.h>
 
-static char	*itoa_status(int n)
-{
-	char	buf[16];
-	int		i;
-	long	nb;
-
-	i = 15;
-	buf[i--] = '\0';
-	nb = n;
-	if (nb == 0)
-		buf[i--] = '0';
-	while (nb > 0 && i >= 0)
-	{
-		buf[i--] = '0' + (nb % 10);
-		nb /= 10;
-	}
-	return (strdup(&buf[i + 1]));
-}
-
-static char	*get_env_value(const char *name)
-{
-	char	*val;
-
-	val = getenv(name);
-	if (val)
-		return (strdup(val));
-	return (strdup(""));
-}
-
 static char	*get_var_expansion(const char *str, size_t *i, int last_status)
 {
 	size_t	start;
@@ -70,31 +41,6 @@ static char	*get_var_expansion(const char *str, size_t *i, int last_status)
 	}
 	varname[j] = '\0';
 	return (get_env_value(varname));
-}
-
-static char	*append_char(char *result, char c)
-{
-	size_t	l;
-
-	l = strlen(result);
-	result = realloc(result, l + 2);
-	result[l] = c;
-	result[l + 1] = '\0';
-	return (result);
-}
-
-static char	*append_cstr_take(char *result, char *val)
-{
-	size_t	l;
-	size_t	vlen;
-
-	l = strlen(result);
-	vlen = strlen(val);
-	result = realloc(result, l + vlen + 1);
-	memcpy(result + l, val, vlen);
-	result[l + vlen] = '\0';
-	free(val);
-	return (result);
 }
 
 static void	expand_handle_dollar(const char *str, size_t *i, int last_status,

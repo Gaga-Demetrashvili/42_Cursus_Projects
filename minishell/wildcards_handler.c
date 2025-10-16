@@ -61,7 +61,7 @@ t_token	*expand_wildcards(t_token *tokens)
 			if (!dir)
 			{
 				add_token(&new_head, &new_tail, new_token(TOKEN_WORD,
-						strdup(cur->value)));
+						strdup(cur->value), QUOTE_NONE));
 				cur = cur->next;
 				continue ;
 			}
@@ -77,20 +77,19 @@ t_token	*expand_wildcards(t_token *tokens)
 				if (match_star(cur->value, entry->d_name))
 				{
 					add_token(&new_head, &new_tail, new_token(TOKEN_WORD,
-							strdup(entry->d_name)));
+							strdup(entry->d_name), QUOTE_NONE));
 					matched = 1;
 				}
 			}
 			closedir(dir);
 			if (!matched)
 				add_token(&new_head, &new_tail, new_token(TOKEN_WORD,
-						strdup(cur->value)));
+						strdup(cur->value), QUOTE_NONE));
 		}
 		else
 		{
 			add_token(&new_head, &new_tail, new_token(cur->type,
-					strdup(cur->value)));
-			new_tail->quote = cur->quote;
+					strdup(cur->value), cur->quote));
 		}
 		cur = cur->next;
 	}

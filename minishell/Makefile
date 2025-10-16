@@ -21,7 +21,7 @@ READLINEFLAG = -lreadline
 all: $(NAME)
 
 $(NAME) : $(OBJ)
-	${CC} ${CFLAGS} ${READLINEFLAG} $(OBJ) -o $(NAME) 
+	${CC} ${CFLAGS} $(OBJ) ${READLINEFLAG} -o $(NAME) 
 	
 clean:
 	rm -f $(OBJ) $(B_OBJ)

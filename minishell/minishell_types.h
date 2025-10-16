@@ -79,8 +79,14 @@ t_token				*new_token(t_token_type type, char *value,
 t_token				*tokenize(const char *input);
 t_token				*expand(t_token *tokens, int last_status);
 t_ast				*parse(t_token *tokens);
+t_ast				*parse_command(t_token **cur);
 t_token				*expand_wildcards(t_token *tokens);
 int					execute(t_ast *node);
+
+char				**build_argv(t_token **cur);
+void				handle_redirections(t_token **cur, char **infile,
+						char **outfile, char **heredoc);
+int					get_append_from_tokens(t_token *tokens);
 
 void				print_ast(const t_ast *node, int depth);
 void				print_token_lst(t_token *token);

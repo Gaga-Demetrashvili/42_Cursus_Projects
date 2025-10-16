@@ -3,6 +3,8 @@ NAME = minishell
 SRC = create_nodes.c\
 	tokenizer.c\
 	parse.c\
+	parse_utils.c\
+	parse_redirections.c\
 	minishell.c\
 	expand.c\
 	wildcards_handler.c\

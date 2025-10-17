@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   minishell_types.h                                  :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: gaga <gaga@student.42.fr>                  +#+  +:+       +#+        */
+/*   By: gdemetra <gdemetra@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/09/24 21:22:14 by gdemetra          #+#    #+#             */
-/*   Updated: 2025/10/16 23:39:05 by gaga             ###   ########.fr       */
+/*   Updated: 2025/10/17 16:51:39 by gdemetra         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -20,16 +20,16 @@
 typedef enum e_token_type
 {
 	TOKEN_WORD,
-	TOKEN_PIPE,      // |
-	TOKEN_AND,       // &&
-	TOKEN_OR,        // ||
-	TOKEN_REDIR_IN,  // <
-	TOKEN_REDIR_OUT, // >
-	TOKEN_APPEND,    // >>
-	TOKEN_HEREDOC,   // <<
+	TOKEN_PIPE,
+	TOKEN_AND,
+	TOKEN_OR,
+	TOKEN_REDIR_IN,
+	TOKEN_REDIR_OUT,
+	TOKEN_APPEND,
+	TOKEN_HEREDOC,
 	TOKEN_EOF,
-	TOKEN_LPAREN, // (
-	TOKEN_RPAREN, // )
+	TOKEN_LPAREN,
+	TOKEN_RPAREN,
 }					t_token_type;
 
 typedef enum e_quote_type
@@ -43,7 +43,7 @@ typedef struct s_token
 {
 	t_token_type	type;
 	char			*value;
-	int quote; // QUOTE_NONE | QUOTE_SINGLE | QUOTE_DOUBLE
+	int				quote;
 	struct s_token	*next;
 }					t_token;
 
@@ -73,24 +73,27 @@ t_ast				*create_and_node(t_ast *left, t_ast *right);
 t_ast				*create_or_node(t_ast *left, t_ast *right);
 t_ast				*create_pipe_node(t_ast *left, t_ast *right);
 
+// tokenization
 t_token				*new_token(t_token_type type, char *value,
 						t_quote_type quote);
 void				token_chainer(t_tokctx *ctx, t_token_type type, char *value,
 						t_quote_type quote);
-
+int					is_operator_char(char c);
+int					handle_operator_case(t_tokctx *ctx, const char *input,
+						size_t *i);
+int					handle_quote_case(t_tokctx *ctx, const char *input,
+						size_t *i, size_t len);
 t_token				*tokenize(const char *input);
+
 t_token				*expand(t_token *tokens, int last_status);
 t_ast				*parse(t_token *tokens);
 t_token				*expand_wildcards(t_token *tokens);
 int					execute(t_ast *node);
 
-// tokenizer helpers
-int					handle_operator_case(t_tokctx *ctx, const char *input,
-						size_t *i);
-int					handle_parentheses_case(t_tokctx *ctx, const char *input,
-						size_t *i);
-int					handle_quote_case(t_tokctx *ctx, const char *input,
-						size_t *i, size_t len);
+// libft functions
+size_t				ft_strlen(const char *str);
+char				*ft_itoa(int n);
 
+// debugging helpers
 void				print_ast(const t_ast *node, int depth);
 void				print_token_lst(t_token *token);

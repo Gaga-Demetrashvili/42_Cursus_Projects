@@ -3,14 +3,14 @@
 /*                                                        :::      ::::::::   */
 /*   tokenizer.c                                        :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: gaga <gaga@student.42.fr>                  +#+  +:+       +#+        */
+/*   By: gdemetra <gdemetra@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/10/14 17:52:46 by gdemetra          #+#    #+#             */
-/*   Updated: 2025/10/16 22:49:08 by gaga             ###   ########.fr       */
+/*   Updated: 2025/10/17 15:07:44 by gdemetra         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
-#include "minishell_types.h"
+#include "../../../minishell_types.h"
 #include <ctype.h>
 #include <stdlib.h>
 #include <string.h>
@@ -26,6 +26,20 @@ static void	handle_word(t_tokctx *ctx, const char *input, size_t *i, size_t len)
 		(*i)++;
 	val = strndup(input + start, *i - start);
 	token_chainer(ctx, TOKEN_WORD, val, QUOTE_NONE);
+}
+
+int	handle_parentheses_case(t_tokctx *ctx, const char *input, size_t *i)
+{
+	if (input[*i] == '(' || input[*i] == ')')
+	{
+		if (input[*i] == '(')
+			token_chainer(ctx, TOKEN_LPAREN, strdup("("), QUOTE_NONE);
+		else
+			token_chainer(ctx, TOKEN_RPAREN, strdup(")"), QUOTE_NONE);
+		(*i)++;
+		return (1);
+	}
+	return (0);
 }
 
 static int	handle_whitespace(const char *input, size_t *i, size_t len)

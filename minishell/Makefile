@@ -1,14 +1,18 @@
 NAME = minishell
 
-SRC = create_nodes.c\
-	tokenizer.c\
+SRC = ./src/frontend/tokenization/tokenizer.c\
+	./src/frontend/tokenization/handle_operator_case.c\
+	./src/frontend/tokenization/handle_quote_case.c\
+	./src/frontend/tokenization/token_utils.c\
+	./src/frontend/expand.c\
 	parse.c\
+	create_nodes.c\
 	minishell.c\
-	expand.c\
 	wildcards_handler.c\
-	token_utils.c\
 	execute.c\
-	debugging_helpers.c
+	debugging_helpers.c\
+	./src/libft/ft_itoa.c\
+	./src/libft/ft_strlen.c
 
 OBJ = $(SRC:.c=.o)
 

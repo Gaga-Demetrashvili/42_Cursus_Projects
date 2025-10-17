@@ -6,7 +6,7 @@
 /*   By: gdemetra <gdemetra@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/10/08 19:52:45 by gdemetra          #+#    #+#             */
-/*   Updated: 2025/10/08 20:56:26 by gdemetra         ###   ########.fr       */
+/*   Updated: 2025/10/17 16:20:35 by gdemetra         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -38,6 +38,8 @@ static const char	*token_type_to_string(t_token_type type)
 		return ("TOKEN_LPAREN");
 	case TOKEN_RPAREN:
 		return ("TOKEN_RPAREN");
+	case TOKEN_SEMI:
+		return ("TOKEN_SEMI");
 	default:
 		return ("UNKNOWN");
 	}
@@ -61,7 +63,8 @@ void	print_token_lst(t_token *token)
 		printf("Linked list head is null!\n");
 	while (token)
 	{
-		printf("%s - %s\n", token_type_to_string(token->type), token->value);
+		printf("%s - \"%s\" (%d)\n", token_type_to_string(token->type),
+			token->value, (int)token->quote);
 		token = token->next;
 	}
 }

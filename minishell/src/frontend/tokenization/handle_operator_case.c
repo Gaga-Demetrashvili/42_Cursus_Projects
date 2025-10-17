@@ -1,19 +1,21 @@
 /* ************************************************************************** */
 /*                                                                            */
 /*                                                        :::      ::::::::   */
-/*   handle_operator_utils.c                            :+:      :+:    :+:   */
+/*   handle_operator_case.c                             :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: gaga <gaga@student.42.fr>                  +#+  +:+       +#+        */
+/*   By: gdemetra <gdemetra@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/10/16 22:40:58 by gaga              #+#    #+#             */
-/*   Updated: 2025/10/16 22:43:22 by gaga             ###   ########.fr       */
+/*   Updated: 2025/10/17 16:50:48 by gdemetra         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
-#include "minishell_types.h"
+#include "../../../minishell_types.h"
 
 size_t	double_operator_matched(const char *input, size_t i, t_token_type *type)
 {
+	if (input[i + 1] == '\0')
+		return (0);
 	if (input[i] == '|' && input[i + 1] == '|')
 	{
 		*type = TOKEN_OR;
@@ -57,7 +59,6 @@ size_t	single_operator_matched(const char *input, size_t i, t_token_type *type)
 	return (0);
 }
 
-// if 0 is returned than nothing was matched
 static size_t	handle_operator(t_tokctx *ctx, const char *input, size_t i)
 {
 	size_t			op_len;
@@ -74,7 +75,7 @@ static size_t	handle_operator(t_tokctx *ctx, const char *input, size_t i)
 	return (op_len);
 }
 
-static int	is_operator_char(char c)
+int	is_operator_char(char c)
 {
 	return (c == '|' || c == '&' || c == '<' || c == '>');
 }
@@ -87,7 +88,11 @@ int	handle_operator_case(t_tokctx *ctx, const char *input, size_t *i)
 	{
 		op_len = handle_operator(ctx, input, *i);
 		if (!op_len)
+		{
+			token_chainer(ctx, TOKEN_WORD, strndup(input + *i, 1), QUOTE_NONE);
+			*i += 1;
 			return (1);
+		}
 		*i += op_len;
 		return (1);
 	}

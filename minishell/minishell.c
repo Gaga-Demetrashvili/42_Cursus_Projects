@@ -43,9 +43,9 @@ int	main(int ac, char **av)
 		add_history(input);
 		tokens = tokenize(input);
 		expanded_tokens = expand(tokens, val);
-		// print_token_lst(expanded_tokens);
-		// return (0);
 		globbed_tokens = expand_wildcards(expanded_tokens);
+		// print_token_lst(globbed_tokens);
+		// return (0);
 		tree = parse(globbed_tokens);
 		val = execute(tree);
 		// print_ast(tree, 0);

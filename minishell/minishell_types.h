@@ -6,11 +6,10 @@
 /*   By: gdemetra <gdemetra@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/09/24 21:22:14 by gdemetra          #+#    #+#             */
-/*   Updated: 2025/10/17 16:51:39 by gdemetra         ###   ########.fr       */
+/*   Updated: 2025/10/17 17:43:23 by gdemetra         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
-#include "ft_gb_collect.h"
 #include <readline/history.h>
 #include <readline/readline.h>
 #include <stdio.h>
@@ -67,6 +66,7 @@ typedef struct s_ast
 	char			*heredoc;
 }					t_ast;
 
+// ast node creators
 t_ast				*create_command_node(char **argv, char *infile,
 						char *outfile, int append, char *heredoc);
 t_ast				*create_and_node(t_ast *left, t_ast *right);
@@ -84,10 +84,14 @@ int					handle_operator_case(t_tokctx *ctx, const char *input,
 int					handle_quote_case(t_tokctx *ctx, const char *input,
 						size_t *i, size_t len);
 t_token				*tokenize(const char *input);
+void				add_token(t_token **head, t_token **tail, t_token *new_tok);
+void				dup_and_add(t_token **head, t_token **tail, t_token *src);
 
+// expansion (env vars + wildcards)
 t_token				*expand(t_token *tokens, int last_status);
-t_ast				*parse(t_token *tokens);
 t_token				*expand_wildcards(t_token *tokens);
+
+t_ast				*parse(t_token *tokens);
 int					execute(t_ast *node);
 
 // libft functions

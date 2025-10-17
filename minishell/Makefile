@@ -4,11 +4,11 @@ SRC = ./src/frontend/tokenization/tokenizer.c\
 	./src/frontend/tokenization/handle_operator_case.c\
 	./src/frontend/tokenization/handle_quote_case.c\
 	./src/frontend/tokenization/token_utils.c\
-	./src/frontend/expand.c\
+	./src/frontend/expand_envs.c\
+	./src/frontend/expand_wildcards.c\
 	parse.c\
 	create_nodes.c\
 	minishell.c\
-	wildcards_handler.c\
 	execute.c\
 	debugging_helpers.c\
 	./src/libft/ft_itoa.c\

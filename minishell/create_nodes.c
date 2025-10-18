@@ -3,20 +3,16 @@
 /*                                                        :::      ::::::::   */
 /*   create_nodes.c                                     :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: gdemetra <gdemetra@student.42.fr>          +#+  +:+       +#+        */
+/*   By: tbaindur <tbaindur@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/09/24 21:43:59 by gdemetra          #+#    #+#             */
-/*   Updated: 2025/10/08 20:19:33 by gdemetra         ###   ########.fr       */
+/*   Updated: 2025/10/18 17:33:16 by tbaindur         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "minishell_types.h"
 
-// -------------------------
-// Create a command node
-// -------------------------
-t_ast	*create_command_node(char **argv, char *infile, char *outfile,
-		int append, char *heredoc)
+t_ast	*create_command_node(t_cmd *cmd)
 {
 	t_ast	*node;
 
@@ -24,75 +20,37 @@ t_ast	*create_command_node(char **argv, char *infile, char *outfile,
 	if (!node)
 		return (NULL);
 	node->type = TOKEN_WORD;
-	node->argv = argv;
+	node->cmd = cmd;
 	node->left = NULL;
 	node->right = NULL;
-	node->infile = infile;
-	node->outfile = outfile;
-	node->append = append;
-	node->heredoc = heredoc;
 	return (node);
 }
 
-// -------------------------
-// Create an AND (&&) node
-// -------------------------
-t_ast	*create_and_node(t_ast *left, t_ast *right)
+t_ast	*create_operator_node(t_ast *left, t_ast *right, t_token_type type)
 {
 	t_ast	*node;
 
 	node = malloc(sizeof(t_ast));
 	if (!node)
 		return (NULL);
-	node->type = TOKEN_AND;
-	node->argv = NULL;
+	node->type = type;
 	node->left = left;
 	node->right = right;
-	node->infile = NULL;
-	node->outfile = NULL;
-	node->append = 0;
-	node->heredoc = NULL;
+	node->cmd = NULL;
 	return (node);
 }
 
-// -------------------------
-// Create an OR (||) node
-// -------------------------
-t_ast	*create_or_node(t_ast *left, t_ast *right)
+t_cmd	*create_cmd(void)
 {
-	t_ast	*node;
+	t_cmd	*cmd;
 
-	node = malloc(sizeof(t_ast));
-	if (!node)
+	cmd = malloc(sizeof(t_cmd));
+	if (!cmd)
 		return (NULL);
-	node->type = TOKEN_OR;
-	node->argv = NULL;
-	node->left = left;
-	node->right = right;
-	node->infile = NULL;
-	node->outfile = NULL;
-	node->append = 0;
-	node->heredoc = NULL;
-	return (node);
-}
-
-// -------------------------
-// Optional: Create a PIPE (|) node
-// -------------------------
-t_ast	*create_pipe_node(t_ast *left, t_ast *right)
-{
-	t_ast *node = malloc(sizeof(t_ast));
-	if (!node)
-		return (NULL);
-
-	node->type = TOKEN_PIPE;
-	node->argv = NULL;
-	node->left = left;
-	node->right = right;
-	node->infile = NULL;
-	node->outfile = NULL;
-	node->append = 0;
-	node->heredoc = NULL;
-
-	return (node);
+	cmd->argv = NULL;
+	cmd->infile = NULL;
+	cmd->outfile = NULL;
+	cmd->append = 0;
+	cmd->heredoc = NULL;
+	return (cmd);
 }

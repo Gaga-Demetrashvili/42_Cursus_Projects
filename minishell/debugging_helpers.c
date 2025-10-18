@@ -3,14 +3,17 @@
 /*                                                        :::      ::::::::   */
 /*   debugging_helpers.c                                :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: gdemetra <gdemetra@student.42.fr>          +#+  +:+       +#+        */
+/*   By: tbaindur <tbaindur@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/10/08 19:52:45 by gdemetra          #+#    #+#             */
-/*   Updated: 2025/10/17 17:04:20 by gdemetra         ###   ########.fr       */
+/*   Updated: 2025/10/18 17:32:41 by tbaindur         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "minishell_types.h"
+#include <stdio.h>
+#include <stdlib.h>
+#include <string.h>
 
 static const char	*token_type_to_string(t_token_type type)
 {
@@ -45,12 +48,19 @@ static const char	*token_type_to_string(t_token_type type)
 
 static void	print_argv(char **argv)
 {
+	int	i;
+
 	if (!argv)
-		return ;
-	printf("[ ");
-	for (int i = 0; argv[i]; i++)
 	{
-		printf("'%s' ", argv[i]);
+		printf("[]");
+		return ;
+	}
+	printf("[");
+	for (i = 0; argv[i]; i++)
+	{
+		if (i)
+			printf(", ");
+		printf("'%s'", argv[i]);
 	}
 	printf("]");
 }
@@ -58,32 +68,42 @@ static void	print_argv(char **argv)
 void	print_token_lst(t_token *token)
 {
 	if (!token)
+	{
 		printf("Linked list head is null!\n");
+		return ;
+	}
 	while (token)
 	{
 		printf("%s - \"%s\" (%d)\n", token_type_to_string(token->type),
-			token->value, (int)token->quote);
+			token->value ? token->value : "(null)", (int)token->quote);
 		token = token->next;
 	}
 }
 
 void	print_ast(const t_ast *node, int depth)
 {
+	int	i;
+
 	if (!node)
 		return ;
-	for (int i = 0; i < depth; i++)
+	for (i = 0; i < depth; i++)
 		printf("  ");
-	printf("%s", token_type_to_string(node->type));
-	if (node->type == TOKEN_WORD)
+	/* prefer printing CMD for nodes that carry a t_cmd */
+	if (node->cmd)
+		printf("CMD");
+	else
+		printf("%s", token_type_to_string(node->type));
+	if (node->cmd)
 	{
 		printf(" ");
-		print_argv(node->argv);
-		if (node->infile)
-			printf(" < '%s'", node->infile);
-		if (node->outfile)
-			printf(" > '%s'%s", node->outfile, node->append ? " (append)" : "");
-		if (node->heredoc)
-			printf(" << '%s'", node->heredoc);
+		print_argv(node->cmd->argv);
+		if (node->cmd->infile)
+			printf(" < '%s'", node->cmd->infile);
+		if (node->cmd->outfile)
+			printf(" > '%s'%s", node->cmd->outfile,
+				node->cmd->append ? " (append)" : "");
+		if (node->cmd->heredoc)
+			printf(" << '%s'", node->cmd->heredoc);
 	}
 	printf("\n");
 	if (node->left)

@@ -8,7 +8,7 @@ SRC = ./src/frontend/tokenization/tokenizer.c\
 	./src/frontend/expand_wildcards.c\
 	./src/frontend/parse/parse.c\
 	./src/frontend/parse/parse_utils.c\
-	create_nodes.c\
+	./src/frontend/create_nodes.c\
 	minishell.c\
 	execute.c\
 	debugging_helpers.c\

@@ -3,14 +3,14 @@
 /*                                                        :::      ::::::::   */
 /*   create_nodes.c                                     :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: tbaindur <tbaindur@student.42.fr>          +#+  +:+       +#+        */
+/*   By: gdemetra <gdemetra@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/09/24 21:43:59 by gdemetra          #+#    #+#             */
-/*   Updated: 2025/10/18 17:33:16 by tbaindur         ###   ########.fr       */
+/*   Updated: 2025/10/18 17:54:51 by gdemetra         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
-#include "minishell_types.h"
+#include "../../minishell_types.h"
 
 t_ast	*create_command_node(t_cmd *cmd)
 {

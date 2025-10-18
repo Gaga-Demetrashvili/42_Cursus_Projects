@@ -6,7 +6,8 @@ SRC = ./src/frontend/tokenization/tokenizer.c\
 	./src/frontend/tokenization/token_utils.c\
 	./src/frontend/expand_envs.c\
 	./src/frontend/expand_wildcards.c\
-	parse.c\
+	./src/frontend/parse/parse.c\
+	./src/frontend/parse/parse_utils.c\
 	create_nodes.c\
 	minishell.c\
 	execute.c\
@@ -18,7 +19,7 @@ OBJ = $(SRC:.c=.o)
 
 CC = cc
 
-CFLAGS = -Wall -Wextra -Werror
+CFLAGS = -g -O0 -Wall -Wextra -Werror
 
 READLINEFLAG = -lreadline
 

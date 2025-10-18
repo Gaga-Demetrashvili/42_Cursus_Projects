@@ -47,8 +47,8 @@ int	main(int ac, char **av)
 		// print_token_lst(globbed_tokens);
 		// return (0);
 		tree = parse(globbed_tokens);
-		val = execute(tree);
-		// print_ast(tree, 0);
+		// val = execute(tree);
+		print_ast(tree, 0);
 		free(input);
 		// TODO: free tokens/AST if you add free functions
 	}

@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   minishell_types.h                                  :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: gdemetra <gdemetra@student.42.fr>          +#+  +:+       +#+        */
+/*   By: tbaindur <tbaindur@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/09/24 21:22:14 by gdemetra          #+#    #+#             */
-/*   Updated: 2025/10/17 17:43:23 by gdemetra         ###   ########.fr       */
+/*   Updated: 2025/10/18 17:41:00 by tbaindur         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -52,26 +52,28 @@ typedef struct s_tokctx
 	t_token			*tail;
 }					t_tokctx;
 
-typedef struct s_ast
+typedef struct s_cmd
 {
-	t_token_type	type;
 	char			**argv;
-
-	struct s_ast	*left;
-	struct s_ast	*right;
-
 	char			*infile;
 	char			*outfile;
 	int				append;
 	char			*heredoc;
+}					t_cmd;
+
+typedef struct s_ast
+{
+	t_token_type	type;
+	t_cmd			*cmd;
+	struct s_ast	*left;
+	struct s_ast	*right;
 }					t_ast;
 
 // ast node creators
-t_ast				*create_command_node(char **argv, char *infile,
-						char *outfile, int append, char *heredoc);
-t_ast				*create_and_node(t_ast *left, t_ast *right);
-t_ast				*create_or_node(t_ast *left, t_ast *right);
-t_ast				*create_pipe_node(t_ast *left, t_ast *right);
+t_ast				*create_command_node(t_cmd *cmd);
+t_ast				*create_operator_node(t_ast *left, t_ast *right,
+						t_token_type type);
+t_cmd				*create_cmd(void);
 
 // tokenization
 t_token				*new_token(t_token_type type, char *value,
@@ -91,7 +93,15 @@ void				dup_and_add(t_token **head, t_token **tail, t_token *src);
 t_token				*expand(t_token *tokens, int last_status);
 t_token				*expand_wildcards(t_token *tokens);
 
+// parsing
 t_ast				*parse(t_token *tokens);
+void				parse_redirection(t_token **cur, t_cmd *cmd);
+int					count_args(t_token *cur);
+char				**build_argv(t_token **cur);
+void				determine_redirection(t_token_type redir, const char *val,
+						t_cmd *cmd);
+
+// execution
 int					execute(t_ast *node);
 
 // libft functions

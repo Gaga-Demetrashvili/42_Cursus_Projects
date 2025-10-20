@@ -1,37 +1,34 @@
 /* ************************************************************************** */
 /*                                                                            */
 /*                                                        :::      ::::::::   */
-/*   ft_itoa.c                                          :+:      :+:    :+:   */
+/*   ft_strchr.c                                        :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
 /*   By: tbaindur <tbaindur@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
-/*   Created: 2025/10/17 15:43:24 by gdemetra          #+#    #+#             */
-/*   Updated: 2025/10/20 20:12:03 by tbaindur         ###   ########.fr       */
+/*   Created: 2025/01/01 00:00:00 by tbaindur          #+#    #+#             */
+/*   Updated: 2025/10/20 21:19:30 by tbaindur         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "../minishell_types.h"
+#include <stdlib.h>
 
-char	*ft_itoa(int n)
+char	*ft_strchr(const char *s, int c)
 {
-	unsigned int	nb;
-	char			buf[4];
-	int				i;
+	size_t	i;
+	char	ch;
 
-	nb = (unsigned char)n;
-	i = 3;
-	buf[i] = '\0';
-	i--;
-	if (nb == 0)
+	if (!s)
+		return (NULL);
+	ch = (char)c;
+	i = 0;
+	while (s[i])
 	{
-		buf[i] = '0';
-		return (ft_strdup(&buf[i]));
+		if (s[i] == ch)
+			return ((char *)(s + i));
+		i++;
 	}
-	while (nb)
-	{
-		buf[i] = (char)('0' + (nb % 10));
-		nb /= 10;
-		i--;
-	}
-	return (ft_strdup(&buf[i + 1]));
+	if (ch == '\0')
+		return ((char *)(s + i));
+	return (NULL);
 }

@@ -24,7 +24,7 @@ static void	handle_quoted_string(t_tokctx *ctx, const char *input, size_t *i,
 	start = *i;
 	while (*i < len && input[*i] != quote)
 		(*i)++;
-	val = strndup(input + start, *i - start);
+	val = ft_strndup(input + start, *i - start);
 	if (quote == '\'')
 		quote_type = QUOTE_SINGLE;
 	else

@@ -24,7 +24,7 @@ static void	handle_word(t_tokctx *ctx, const char *input, size_t *i, size_t len)
 	while (*i < len && !isspace(input[*i]) && !is_operator_char(input[*i])
 		&& input[*i] != '(' && input[*i] != ')')
 		(*i)++;
-	val = strndup(input + start, *i - start);
+	val = ft_strndup(input + start, *i - start);
 	token_chainer(ctx, TOKEN_WORD, val, QUOTE_NONE);
 }
 
@@ -33,9 +33,9 @@ int	handle_parentheses_case(t_tokctx *ctx, const char *input, size_t *i)
 	if (input[*i] == '(' || input[*i] == ')')
 	{
 		if (input[*i] == '(')
-			token_chainer(ctx, TOKEN_LPAREN, strdup("("), QUOTE_NONE);
+			token_chainer(ctx, TOKEN_LPAREN, ft_strdup("("), QUOTE_NONE);
 		else
-			token_chainer(ctx, TOKEN_RPAREN, strdup(")"), QUOTE_NONE);
+			token_chainer(ctx, TOKEN_RPAREN, ft_strdup(")"), QUOTE_NONE);
 		(*i)++;
 		return (1);
 	}
@@ -75,7 +75,7 @@ t_token	*tokenize(const char *input)
 
 	ctx.head = NULL;
 	ctx.tail = NULL;
-	len = strlen(input);
+	len = ft_strlen(input);
 	tokenize_loop(&ctx, input, len);
 	return (ctx.head);
 }

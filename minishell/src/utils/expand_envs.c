@@ -20,9 +20,9 @@ static char	*get_env_value(const char *name)
 
 	val = getenv(name);
 	if (val)
-		res = strdup(val);
+		res = ft_strdup(val);
 	else
-		res = strdup("");
+		res = ft_strdup("");
 	return (res);
 }
 
@@ -33,7 +33,7 @@ static void	append_value(char **dst, size_t *res_len, const char *val,
 
 	if (!val)
 		return ;
-	vlen = strlen(val);
+	vlen = ft_strlen(val);
 	*dst = realloc(*dst, *res_len + vlen + tail_estimate + 1);
 	if (!*dst)
 		return ;
@@ -57,10 +57,10 @@ static char	*expand_dollar(const char *s, size_t *i, size_t len,
 	while (*i < len && (isalnum((unsigned char)s[*i]) || s[*i] == '_'))
 		(*i)++;
 	if (*i == start)
-		return (strdup("$"));
-	name = strndup(s + start, *i - start);
+		return (ft_strdup("$"));
+	name = ft_strndup(s + start, *i - start);
 	if (!name)
-		return (strdup(""));
+		return (ft_strdup(""));
 	name = get_env_value(name);
 	return (name);
 }
@@ -74,7 +74,7 @@ static char	*expand_str(const char *str, int last_status)
 	char	*val;
 
 	i = 0;
-	len = strlen(str);
+	len = ft_strlen(str);
 	result = malloc(len + 1);
 	if (!result)
 		return (NULL);
@@ -104,7 +104,7 @@ t_token	*expand(t_token *tokens, int last_status)
 	{
 		if (cur->type == TOKEN_WORD && cur->value)
 		{
-			if (cur->quote != QUOTE_SINGLE && strchr(cur->value, '$'))
+			if (cur->quote != QUOTE_SINGLE && ft_strchr(cur->value, '$'))
 			{
 				expanded = expand_str(cur->value, last_status);
 				free(cur->value);

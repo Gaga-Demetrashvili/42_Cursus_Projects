@@ -6,7 +6,7 @@
 /*   By: tbaindur <tbaindur@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/10/12 19:59:49 by gdemetra          #+#    #+#             */
-/*   Updated: 2025/10/20 20:12:19 by tbaindur         ###   ########.fr       */
+/*   Updated: 2025/10/20 20:47:50 by tbaindur         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -17,7 +17,7 @@
 #include <sys/wait.h>
 #include <unistd.h>
 
-int	execute_command(t_ast *node)
+int	execute_command(t_ast *node, char ***envp)
 {
 	int		heredoc_fd;
 	pid_t	pid;
@@ -25,6 +25,8 @@ int	execute_command(t_ast *node)
 
 	if (!node || !node->cmd || !node->cmd->argv || !node->cmd->argv[0])
 		return (1);
+	if (is_builtin(node->cmd->argv[0]))
+		return (execute_builtin(node->cmd->argv, envp));
 	heredoc_fd = -1;
 	if (node->cmd->heredoc)
 		heredoc_fd = collect_heredoc(node->cmd->heredoc);
@@ -43,43 +45,43 @@ int	execute_command(t_ast *node)
 	return (1);
 }
 
-static int	exec_token_and(t_ast *node)
+static int	exec_token_and(t_ast *node, char ***envp)
 {
 	int	ls;
 
-	ls = execute(node->left);
+	ls = execute(node->left, envp);
 	if (ls == 0)
-		return (execute(node->right));
+		return (execute(node->right, envp));
 	if (ls)
 		return (1);
 	return (0);
 }
 
-static int	exec_token_or(t_ast *node)
+static int	exec_token_or(t_ast *node, char ***envp)
 {
 	int	ls;
 
-	ls = execute(node->left);
+	ls = execute(node->left, envp);
 	if (ls != 0)
-		return (execute(node->right));
+		return (execute(node->right, envp));
 	return (0);
 }
 
-int	execute(t_ast *node)
+int	execute(t_ast *node, char ***envp)
 {
 	if (!node)
 		return (0);
 	if (node->type == TOKEN_PIPE)
-		return (execute_pipe(node));
+		return (execute_pipe(node, envp));
 	else if (node->type == TOKEN_AND)
-		return (exec_token_and(node));
+		return (exec_token_and(node, envp));
 	else if (node->type == TOKEN_OR)
-		return (exec_token_or(node));
+		return (exec_token_or(node, envp));
 	else if (node->type == TOKEN_WORD)
-		return (execute_command(node));
+		return (execute_command(node, envp));
 	else
 	{
-		fprintf(stderr, "Unsupported AST node type: %d\n", node->type);
+		write(2, "Unsupported AST node type\n", 26);
 		return (1);
 	}
 }

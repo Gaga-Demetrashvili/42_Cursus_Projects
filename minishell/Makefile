@@ -13,10 +13,23 @@ SRC = ./src/tokenization/tokenizer.c\
 	./src/execution/execute_utils.c\
 	./src/execution/execute_heredoc.c\
 	./src/execution/execute_pipe.c\
-	minishell.c\
-	debugging_helpers.c\
+	./src/execution/execute_pipe_utils.c\
+	./src/builtins/builtin_dispatcher.c\
+	./src/builtins/builtin_echo.c\
+	./src/builtins/builtin_cd.c\
+	./src/builtins/builtin_pwd.c\
+	./src/builtins/builtin_env.c\
+	./src/builtins/builtin_exit.c\
+	./src/builtins/builtin_export.c\
+	./src/builtins/builtin_unset.c\
 	./src/libft/ft_itoa.c\
-	./src/libft/ft_strlen.c
+	./src/libft/ft_strlen.c\
+	./src/libft/ft_strdup.c\
+	./src/libft/ft_strndup.c\
+	./src/libft/ft_strcmp.c\
+	./src/libft/ft_strncmp.c\
+	./src/libft/ft_strchr.c\
+	minishell.c\
 
 OBJ = $(SRC:.c=.o)
 

@@ -1,37 +1,36 @@
 /* ************************************************************************** */
 /*                                                                            */
 /*                                                        :::      ::::::::   */
-/*   ft_itoa.c                                          :+:      :+:    :+:   */
+/*   ft_strdup.c                                        :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
 /*   By: tbaindur <tbaindur@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
-/*   Created: 2025/10/17 15:43:24 by gdemetra          #+#    #+#             */
-/*   Updated: 2025/10/20 20:12:03 by tbaindur         ###   ########.fr       */
+/*   Created: 2025/01/01 00:00:00 by tbaindur          #+#    #+#             */
+/*   Updated: 2025/10/20 20:48:15 by tbaindur         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "../minishell_types.h"
+#include <stdlib.h>
 
-char	*ft_itoa(int n)
+char	*ft_strdup(const char *s1)
 {
-	unsigned int	nb;
-	char			buf[4];
-	int				i;
+	char	*dup;
+	size_t	len;
+	size_t	i;
 
-	nb = (unsigned char)n;
-	i = 3;
-	buf[i] = '\0';
-	i--;
-	if (nb == 0)
+	if (!s1)
+		return (NULL);
+	len = ft_strlen(s1);
+	dup = malloc(sizeof(char) * (len + 1));
+	if (!dup)
+		return (NULL);
+	i = 0;
+	while (i < len)
 	{
-		buf[i] = '0';
-		return (ft_strdup(&buf[i]));
+		dup[i] = s1[i];
+		i++;
 	}
-	while (nb)
-	{
-		buf[i] = (char)('0' + (nb % 10));
-		nb /= 10;
-		i--;
-	}
-	return (ft_strdup(&buf[i + 1]));
+	dup[i] = '\0';
+	return (dup);
 }

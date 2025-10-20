@@ -22,24 +22,24 @@ static int	match_star(const char *pat, const char *s)
 	size_t		sfx;
 	size_t		slen;
 
-	star = strchr(pat, '*');
+	star = ft_strchr(pat, '*');
 	if (!star)
-		return (strcmp(pat, s) == 0);
+		return (ft_strcmp(pat, s) == 0);
 	pfx = (size_t)(star - pat);
-	sfx = strlen(star + 1);
-	slen = strlen(s);
-	if (pfx && strncmp(s, pat, pfx) != 0)
+	sfx = ft_strlen(star + 1);
+	slen = ft_strlen(s);
+	if (pfx && ft_strncmp(s, pat, pfx) != 0)
 		return (0);
 	if (slen < pfx + sfx)
 		return (0);
-	if (sfx && strcmp(s + slen - sfx, star + 1) != 0)
+	if (sfx && ft_strcmp(s + slen - sfx, star + 1) != 0)
 		return (0);
 	return (1);
 }
 
 static int	should_include(const char *name, int pat_starts_dot)
 {
-	if (strcmp(name, ".") == 0 || strcmp(name, "..") == 0)
+	if (ft_strcmp(name, ".") == 0 || ft_strcmp(name, "..") == 0)
 		return (0);
 	if (!pat_starts_dot && name[0] == '.')
 		return (0);
@@ -65,7 +65,7 @@ static int	process_dir_entries(DIR *dir, t_token **head, t_token **tail,
 		}
 		if (match_star(cur->value, ent->d_name))
 		{
-			add_token(head, tail, new_token(TOKEN_WORD, strdup(ent->d_name),
+			add_token(head, tail, new_token(TOKEN_WORD, ft_strdup(ent->d_name),
 					QUOTE_NONE));
 			matched = 1;
 		}
@@ -100,7 +100,7 @@ t_token	*expand_wildcards(t_token *tokens)
 	while (cur)
 	{
 		if (cur->type == TOKEN_WORD && cur->quote == QUOTE_NONE && cur->value
-			&& strchr(cur->value, '*'))
+			&& ft_strchr(cur->value, '*'))
 			expand_pattern_token(&new_head, &new_tail, cur);
 		else
 			dup_and_add(&new_head, &new_tail, cur);

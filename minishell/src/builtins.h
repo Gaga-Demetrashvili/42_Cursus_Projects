@@ -1,37 +1,29 @@
 /* ************************************************************************** */
 /*                                                                            */
 /*                                                        :::      ::::::::   */
-/*   ft_itoa.c                                          :+:      :+:    :+:   */
+/*   builtins.h                                         :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
 /*   By: tbaindur <tbaindur@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
-/*   Created: 2025/10/17 15:43:24 by gdemetra          #+#    #+#             */
-/*   Updated: 2025/10/20 20:12:03 by tbaindur         ###   ########.fr       */
+/*   Created: 2025/10/20 00:00:00 by tbaindur          #+#    #+#             */
+/*   Updated: 2025/10/20 20:35:10 by tbaindur         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
-#include "../minishell_types.h"
+#ifndef BUILTINS_H
+# define BUILTINS_H
 
-char	*ft_itoa(int n)
-{
-	unsigned int	nb;
-	char			buf[4];
-	int				i;
+# include "minishell_types.h"
 
-	nb = (unsigned char)n;
-	i = 3;
-	buf[i] = '\0';
-	i--;
-	if (nb == 0)
-	{
-		buf[i] = '0';
-		return (ft_strdup(&buf[i]));
-	}
-	while (nb)
-	{
-		buf[i] = (char)('0' + (nb % 10));
-		nb /= 10;
-		i--;
-	}
-	return (ft_strdup(&buf[i + 1]));
-}
+int	is_builtin(const char *cmd);
+int	execute_builtin(char **argv, char ***envp);
+
+int	builtin_echo(char **argv);
+int	builtin_cd(char **argv);
+int	builtin_pwd(void);
+int	builtin_export(char **argv, char ***envp);
+int	builtin_unset(char **argv, char ***envp);
+int	builtin_env(char **envp);
+int	builtin_exit(char **argv);
+
+#endif

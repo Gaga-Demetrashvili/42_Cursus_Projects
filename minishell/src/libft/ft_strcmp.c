@@ -1,37 +1,25 @@
 /* ************************************************************************** */
 /*                                                                            */
 /*                                                        :::      ::::::::   */
-/*   ft_itoa.c                                          :+:      :+:    :+:   */
+/*   ft_strcmp.c                                        :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
 /*   By: tbaindur <tbaindur@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
-/*   Created: 2025/10/17 15:43:24 by gdemetra          #+#    #+#             */
-/*   Updated: 2025/10/20 20:12:03 by tbaindur         ###   ########.fr       */
+/*   Created: 2025/01/01 00:00:00 by tbaindur          #+#    #+#             */
+/*   Updated: 2025/10/20 21:19:29 by tbaindur         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "../minishell_types.h"
 
-char	*ft_itoa(int n)
+int	ft_strcmp(const char *s1, const char *s2)
 {
-	unsigned int	nb;
-	char			buf[4];
-	int				i;
+	size_t	i;
 
-	nb = (unsigned char)n;
-	i = 3;
-	buf[i] = '\0';
-	i--;
-	if (nb == 0)
-	{
-		buf[i] = '0';
-		return (ft_strdup(&buf[i]));
-	}
-	while (nb)
-	{
-		buf[i] = (char)('0' + (nb % 10));
-		nb /= 10;
-		i--;
-	}
-	return (ft_strdup(&buf[i + 1]));
+	if (!s1 || !s2)
+		return (0);
+	i = 0;
+	while (s1[i] && s2[i] && s1[i] == s2[i])
+		i++;
+	return ((unsigned char)s1[i] - (unsigned char)s2[i]);
 }

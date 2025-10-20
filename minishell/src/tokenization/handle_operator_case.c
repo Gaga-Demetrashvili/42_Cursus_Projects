@@ -6,7 +6,7 @@
 /*   By: tbaindur <tbaindur@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/10/16 22:40:58 by gaga              #+#    #+#             */
-/*   Updated: 2025/10/20 20:11:53 by tbaindur         ###   ########.fr       */
+/*   Updated: 2025/10/20 21:29:43 by tbaindur         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -71,7 +71,7 @@ static size_t	handle_operator(t_tokctx *ctx, const char *input, size_t i)
 		op_len = 1;
 	else
 		return (0);
-	token_chainer(ctx, type, strndup(input + i, op_len), QUOTE_NONE);
+	token_chainer(ctx, type, ft_strndup(input + i, op_len), QUOTE_NONE);
 	return (op_len);
 }
 
@@ -89,7 +89,8 @@ int	handle_operator_case(t_tokctx *ctx, const char *input, size_t *i)
 		op_len = handle_operator(ctx, input, *i);
 		if (!op_len)
 		{
-			token_chainer(ctx, TOKEN_WORD, strndup(input + *i, 1), QUOTE_NONE);
+			token_chainer(ctx, TOKEN_WORD, ft_strndup(input + *i, 1),
+				QUOTE_NONE);
 			*i += 1;
 			return (1);
 		}

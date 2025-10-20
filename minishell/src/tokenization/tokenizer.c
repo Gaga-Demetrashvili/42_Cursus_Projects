@@ -3,14 +3,14 @@
 /*                                                        :::      ::::::::   */
 /*   tokenizer.c                                        :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: gdemetra <gdemetra@student.42.fr>          +#+  +:+       +#+        */
+/*   By: tbaindur <tbaindur@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/10/14 17:52:46 by gdemetra          #+#    #+#             */
-/*   Updated: 2025/10/17 15:07:44 by gdemetra         ###   ########.fr       */
+/*   Updated: 2025/10/20 20:11:35 by tbaindur         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
-#include "../../../minishell_types.h"
+#include "../minishell_types.h"
 #include <ctype.h>
 #include <stdlib.h>
 #include <string.h>

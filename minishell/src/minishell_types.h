@@ -6,7 +6,7 @@
 /*   By: tbaindur <tbaindur@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/09/24 21:22:14 by gdemetra          #+#    #+#             */
-/*   Updated: 2025/10/18 17:41:00 by tbaindur         ###   ########.fr       */
+/*   Updated: 2025/10/20 19:59:11 by tbaindur         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -103,6 +103,12 @@ void				determine_redirection(t_token_type redir, const char *val,
 
 // execution
 int					execute(t_ast *node);
+int					execute_command(t_ast *node);
+int					execute_pipe(t_ast *node);
+void				run_command_child(t_ast *node, int heredoc_fd,
+						int stdin_pre_set);
+int					collect_heredoc(const char *delimiter);
+void				write_lines_until_delimiter(int fd, const char *delimiter);
 
 // libft functions
 size_t				ft_strlen(const char *str);

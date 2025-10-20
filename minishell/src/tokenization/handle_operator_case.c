@@ -3,14 +3,14 @@
 /*                                                        :::      ::::::::   */
 /*   handle_operator_case.c                             :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: gdemetra <gdemetra@student.42.fr>          +#+  +:+       +#+        */
+/*   By: tbaindur <tbaindur@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/10/16 22:40:58 by gaga              #+#    #+#             */
-/*   Updated: 2025/10/17 16:50:48 by gdemetra         ###   ########.fr       */
+/*   Updated: 2025/10/20 20:11:53 by tbaindur         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
-#include "../../../minishell_types.h"
+#include "../minishell_types.h"
 
 size_t	double_operator_matched(const char *input, size_t i, t_token_type *type)
 {

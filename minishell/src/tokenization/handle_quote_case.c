@@ -3,14 +3,14 @@
 /*                                                        :::      ::::::::   */
 /*   handle_quote_case.c                                :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: gdemetra <gdemetra@student.42.fr>          +#+  +:+       +#+        */
+/*   By: tbaindur <tbaindur@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/10/16 22:47:46 by gaga              #+#    #+#             */
-/*   Updated: 2025/10/17 15:10:31 by gdemetra         ###   ########.fr       */
+/*   Updated: 2025/10/20 20:11:51 by tbaindur         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
-#include "../../../minishell_types.h"
+#include "../minishell_types.h"
 
 static void	handle_quoted_string(t_tokctx *ctx, const char *input, size_t *i,
 		size_t len)

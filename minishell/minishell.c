@@ -1,4 +1,4 @@
-#include "minishell_types.h"
+#include "./src/minishell_types.h"
 #include <readline/history.h>
 #include <readline/readline.h>
 #include <signal.h>
@@ -44,11 +44,9 @@ int	main(int ac, char **av)
 		tokens = tokenize(input);
 		expanded_tokens = expand(tokens, val);
 		globbed_tokens = expand_wildcards(expanded_tokens);
-		// print_token_lst(globbed_tokens);
-		// return (0);
 		tree = parse(globbed_tokens);
-		// val = execute(tree);
-		print_ast(tree, 0);
+		// print_ast(tree, 0);
+		val = execute(tree);
 		free(input);
 		// TODO: free tokens/AST if you add free functions
 	}

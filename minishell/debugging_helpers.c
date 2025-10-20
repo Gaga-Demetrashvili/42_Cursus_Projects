@@ -6,11 +6,11 @@
 /*   By: tbaindur <tbaindur@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/10/08 19:52:45 by gdemetra          #+#    #+#             */
-/*   Updated: 2025/10/18 17:32:41 by tbaindur         ###   ########.fr       */
+/*   Updated: 2025/10/20 20:14:03 by tbaindur         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
-#include "minishell_types.h"
+#include "./src/minishell_types.h"
 #include <stdio.h>
 #include <stdlib.h>
 #include <string.h>

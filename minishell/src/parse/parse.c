@@ -6,11 +6,11 @@
 /*   By: tbaindur <tbaindur@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/10/17 18:25:22 by tbaindur          #+#    #+#             */
-/*   Updated: 2025/10/18 17:44:44 by tbaindur         ###   ########.fr       */
+/*   Updated: 2025/10/20 20:12:00 by tbaindur         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
-#include "../../../minishell_types.h"
+#include "../minishell_types.h"
 
 static t_ast	*parse_and_or(t_token **cur);
 

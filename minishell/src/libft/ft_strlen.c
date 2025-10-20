@@ -3,14 +3,14 @@
 /*                                                        :::      ::::::::   */
 /*   ft_strlen.c                                        :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: gdemetra <gdemetra@student.42.fr>          +#+  +:+       +#+        */
+/*   By: tbaindur <tbaindur@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/10/17 15:42:42 by gdemetra          #+#    #+#             */
-/*   Updated: 2025/10/17 16:01:20 by gdemetra         ###   ########.fr       */
+/*   Updated: 2025/10/20 20:12:06 by tbaindur         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
-#include "./../../minishell_types.h"
+#include "../minishell_types.h"
 
 size_t	ft_strlen(const char *str)
 {

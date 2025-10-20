@@ -3,14 +3,14 @@
 /*                                                        :::      ::::::::   */
 /*   expand_wildcards.c                                 :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: gdemetra <gdemetra@student.42.fr>          +#+  +:+       +#+        */
+/*   By: tbaindur <tbaindur@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/10/17 17:33:07 by gdemetra          #+#    #+#             */
-/*   Updated: 2025/10/17 17:45:06 by gdemetra         ###   ########.fr       */
+/*   Updated: 2025/10/20 20:12:30 by tbaindur         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
-#include "./../../minishell_types.h"
+#include "../minishell_types.h"
 #include <dirent.h>
 #include <stdlib.h>
 #include <string.h>

@@ -6,11 +6,11 @@
 /*   By: tbaindur <tbaindur@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/10/18 17:38:15 by tbaindur          #+#    #+#             */
-/*   Updated: 2025/10/18 17:45:37 by tbaindur         ###   ########.fr       */
+/*   Updated: 2025/10/20 20:11:58 by tbaindur         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
-#include "../../../minishell_types.h"
+#include "../minishell_types.h"
 
 void	parse_redirection(t_token **cur, t_cmd *cmd)
 {

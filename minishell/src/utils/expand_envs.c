@@ -1,16 +1,16 @@
 /* ************************************************************************** */
 /*                                                                            */
 /*                                                        :::      ::::::::   */
-/*   expand.c                                           :+:      :+:    :+:   */
+/*   expand_envs.c                                      :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: gdemetra <gdemetra@student.42.fr>          +#+  +:+       +#+        */
+/*   By: tbaindur <tbaindur@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/10/17 15:54:52 by gdemetra          #+#    #+#             */
-/*   Updated: 2025/10/17 16:45:00 by gdemetra         ###   ########.fr       */
+/*   Updated: 2025/10/20 20:12:26 by tbaindur         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
-#include "../../minishell_types.h"
+#include "../minishell_types.h"
 #include <ctype.h>
 
 static char	*get_env_value(const char *name)

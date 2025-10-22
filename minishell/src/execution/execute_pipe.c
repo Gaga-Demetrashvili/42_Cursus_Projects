@@ -6,7 +6,7 @@
 /*   By: tbaindur <tbaindur@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/10/20 00:00:00 by tbaindur          #+#    #+#             */
-/*   Updated: 2025/10/20 21:31:06 by tbaindur         ###   ########.fr       */
+/*   Updated: 2025/10/22 21:55:42 by tbaindur         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -17,9 +17,8 @@
 #include <sys/wait.h>
 #include <unistd.h>
 
-extern char	**g_envp;
-
-static void	exec_left_child(t_ast *node, int *pfd, int left_heredoc_fd)
+static void	exec_left_child(t_ast *node, int *pfd, int left_heredoc_fd,
+		char **envp)
 {
 	if (dup2(pfd[1], STDOUT_FILENO) < 0)
 	{
@@ -29,12 +28,13 @@ static void	exec_left_child(t_ast *node, int *pfd, int left_heredoc_fd)
 	close(pfd[0]);
 	close(pfd[1]);
 	if (node->left && node->left->type == TOKEN_WORD)
-		run_command_child(node->left, left_heredoc_fd, 0);
+		run_command_child(node->left, left_heredoc_fd, 0, envp);
 	else
-		exit(execute(node->left, &g_envp));
+		exit(execute(node->left, &envp));
 }
 
-static void	exec_right_child(t_ast *node, int *pfd, int right_heredoc_fd)
+static void	exec_right_child(t_ast *node, int *pfd, int right_heredoc_fd,
+		char **envp)
 {
 	if (right_heredoc_fd < 0)
 	{
@@ -47,9 +47,9 @@ static void	exec_right_child(t_ast *node, int *pfd, int right_heredoc_fd)
 	close(pfd[0]);
 	close(pfd[1]);
 	if (node->right && node->right->type == TOKEN_WORD)
-		run_command_child(node->right, right_heredoc_fd, 1);
+		run_command_child(node->right, right_heredoc_fd, 1, envp);
 	else
-		exit(execute(node->right, &g_envp));
+		exit(execute(node->right, &envp));
 }
 
 static void	collect_pipe_heredocs(t_ast *node, int *left_fd, int *right_fd)
@@ -88,7 +88,6 @@ int	execute_pipe(t_ast *node, char ***envp)
 	pid_t	pid_left;
 	pid_t	pid_right;
 
-	(void)envp;
 	if (pipe(pfd) < 0)
 	{
 		perror("pipe");
@@ -97,10 +96,10 @@ int	execute_pipe(t_ast *node, char ***envp)
 	collect_pipe_heredocs(node, &left_heredoc_fd, &right_heredoc_fd);
 	pid_left = fork();
 	if (pid_left == 0)
-		exec_left_child(node, pfd, left_heredoc_fd);
+		exec_left_child(node, pfd, left_heredoc_fd, *envp);
 	pid_right = fork();
 	if (pid_right == 0)
-		exec_right_child(node, pfd, right_heredoc_fd);
+		exec_right_child(node, pfd, right_heredoc_fd, *envp);
 	close_pipe_fds(pfd, left_heredoc_fd, right_heredoc_fd);
 	return (wait_pipe_children(pid_left, pid_right));
 }

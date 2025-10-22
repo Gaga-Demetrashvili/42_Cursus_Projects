@@ -6,7 +6,7 @@
 /*   By: tbaindur <tbaindur@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/10/20 00:00:00 by tbaindur          #+#    #+#             */
-/*   Updated: 2025/10/20 20:50:14 by tbaindur         ###   ########.fr       */
+/*   Updated: 2025/10/22 21:53:45 by tbaindur         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -16,6 +16,7 @@
 #include <stdio.h>
 #include <stdlib.h>
 #include <string.h>
+#include <sys/wait.h>
 #include <unistd.h>
 
 void	write_lines_until_delimiter(int fd, const char *delimiter)
@@ -38,43 +39,26 @@ void	write_lines_until_delimiter(int fd, const char *delimiter)
 	}
 }
 
-static void	copy_template(char *dest)
-{
-	const char	*src = "/tmp/minishell_heredoc.XXXXXX";
-	int			i;
-
-	i = 0;
-	while (src[i])
-	{
-		dest[i] = src[i];
-		i++;
-	}
-	dest[i] = '\0';
-}
-
 int	collect_heredoc(const char *delimiter)
 {
-	char	tmpl[32];
-	int		wfd;
-	int		rfd;
+	int		pfd[2];
+	pid_t	pid;
+	int		status;
 
-	copy_template(tmpl);
-	wfd = mkstemp(tmpl);
-	if (wfd < 0)
+	if (pipe(pfd) < 0)
 	{
-		perror("mkstemp");
+		perror("pipe");
 		return (-1);
 	}
-	write_lines_until_delimiter(wfd, delimiter);
-	rfd = open(tmpl, O_RDONLY);
-	if (rfd < 0)
+	pid = fork();
+	if (pid == 0)
 	{
-		perror("open heredoc");
-		close(wfd);
-		unlink(tmpl);
-		return (-1);
+		close(pfd[0]);
+		write_lines_until_delimiter(pfd[1], delimiter);
+		close(pfd[1]);
+		exit(0);
 	}
-	unlink(tmpl);
-	close(wfd);
-	return (rfd);
+	close(pfd[1]);
+	waitpid(pid, &status, 0);
+	return (pfd[0]);
 }

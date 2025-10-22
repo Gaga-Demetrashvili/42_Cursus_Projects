@@ -5,12 +5,14 @@ SRC = ./src/tokenization/tokenizer.c\
 	./src/tokenization/handle_quote_case.c\
 	./src/tokenization/token_utils.c\
 	./src/utils/expand_envs.c\
+	./src/utils/expand_utils.c\
 	./src/utils/expand_wildcards.c\
 	./src/utils/create_nodes.c\
 	./src/parse/parse.c\
 	./src/parse/parse_utils.c\
 	./src/execution/execute.c\
 	./src/execution/execute_utils.c\
+	./src/execution/execute_path.c\
 	./src/execution/execute_heredoc.c\
 	./src/execution/execute_pipe.c\
 	./src/execution/execute_pipe_utils.c\
@@ -21,6 +23,7 @@ SRC = ./src/tokenization/tokenizer.c\
 	./src/builtins/builtin_env.c\
 	./src/builtins/builtin_exit.c\
 	./src/builtins/builtin_export.c\
+	./src/builtins/export_utils.c\
 	./src/builtins/builtin_unset.c\
 	./src/libft/ft_itoa.c\
 	./src/libft/ft_strlen.c\

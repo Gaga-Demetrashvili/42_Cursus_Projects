@@ -6,11 +6,13 @@
 /*   By: tbaindur <tbaindur@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/10/16 22:40:58 by gaga              #+#    #+#             */
-/*   Updated: 2025/10/20 21:29:43 by tbaindur         ###   ########.fr       */
+/*   Updated: 2025/10/22 22:10:14 by tbaindur         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "../minishell_types.h"
+#include <stdio.h>
+#include <stdlib.h>
 
 size_t	double_operator_matched(const char *input, size_t i, t_token_type *type)
 {

@@ -6,7 +6,7 @@
 /*   By: tbaindur <tbaindur@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/10/20 00:00:00 by tbaindur          #+#    #+#             */
-/*   Updated: 2025/10/20 21:32:05 by tbaindur         ###   ########.fr       */
+/*   Updated: 2025/10/22 22:32:54 by tbaindur         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -80,8 +80,13 @@ static void	setup_stdout(t_ast *node)
 	}
 }
 
-void	run_command_child(t_ast *node, int heredoc_fd, int stdin_pre_set)
+void	run_command_child(t_ast *node, int heredoc_fd, int stdin_pre_set,
+		char **envp)
 {
+	char	*path;
+	char	**tmp_envp;
+	int		exit_code;
+
 	signal(SIGINT, SIG_DFL);
 	signal(SIGQUIT, SIG_DFL);
 	if (!stdin_pre_set)
@@ -89,7 +94,17 @@ void	run_command_child(t_ast *node, int heredoc_fd, int stdin_pre_set)
 	else if (heredoc_fd >= 0)
 		setup_stdin_heredoc(heredoc_fd);
 	setup_stdout(node);
-	execvp(node->cmd->argv[0], node->cmd->argv);
-	perror("execvp");
+	if (is_builtin(node->cmd->argv[0]))
+	{
+		tmp_envp = envp;
+		exit_code = execute_builtin(node->cmd->argv, &tmp_envp);
+		exit(exit_code);
+	}
+	path = find_in_path(node->cmd->argv[0], envp);
+	if (!path)
+		exit(127);
+	execve(path, node->cmd->argv, envp);
+	perror("execve");
+	free(path);
 	exit(127);
 }

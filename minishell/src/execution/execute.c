@@ -6,7 +6,7 @@
 /*   By: tbaindur <tbaindur@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/10/12 19:59:49 by gdemetra          #+#    #+#             */
-/*   Updated: 2025/10/20 20:47:50 by tbaindur         ###   ########.fr       */
+/*   Updated: 2025/10/22 22:32:44 by tbaindur         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -25,14 +25,15 @@ int	execute_command(t_ast *node, char ***envp)
 
 	if (!node || !node->cmd || !node->cmd->argv || !node->cmd->argv[0])
 		return (1);
-	if (is_builtin(node->cmd->argv[0]))
+	if (is_builtin(node->cmd->argv[0]) && !node->cmd->outfile
+		&& !node->cmd->infile)
 		return (execute_builtin(node->cmd->argv, envp));
 	heredoc_fd = -1;
 	if (node->cmd->heredoc)
 		heredoc_fd = collect_heredoc(node->cmd->heredoc);
 	pid = fork();
 	if (pid == 0)
-		run_command_child(node, heredoc_fd, 0);
+		run_command_child(node, heredoc_fd, 0, *envp);
 	if (heredoc_fd >= 0)
 		close(heredoc_fd);
 	status = 0;

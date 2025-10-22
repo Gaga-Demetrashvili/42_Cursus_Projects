@@ -6,11 +6,12 @@
 /*   By: tbaindur <tbaindur@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/10/20 00:00:00 by tbaindur          #+#    #+#             */
-/*   Updated: 2025/10/20 20:35:11 by tbaindur         ###   ########.fr       */
+/*   Updated: 2025/10/22 22:09:12 by tbaindur         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "../builtins.h"
+#include <stdio.h>
 #include <unistd.h>
 
 int	builtin_env(char **envp)

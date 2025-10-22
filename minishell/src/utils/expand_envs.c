@@ -6,95 +6,112 @@
 /*   By: tbaindur <tbaindur@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/10/17 15:54:52 by gdemetra          #+#    #+#             */
-/*   Updated: 2025/10/20 20:12:26 by tbaindur         ###   ########.fr       */
+/*   Updated: 2025/10/22 22:28:40 by tbaindur         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "../minishell_types.h"
-#include <ctype.h>
+#include <stdio.h>
+#include <stdlib.h>
+#include <string.h>
 
-static char	*get_env_value(const char *name)
-{
-	char	*val;
-	char	*res;
-
-	val = getenv(name);
-	if (val)
-		res = ft_strdup(val);
-	else
-		res = ft_strdup("");
-	return (res);
-}
+int			ft_isalnum_exp(int c);
+char		*get_env_val(const char *name, char **envp);
+void		mem_copy(void *dst, const void *src, size_t n);
 
 static void	append_value(char **dst, size_t *res_len, const char *val,
 		size_t tail_estimate)
 {
 	size_t	vlen;
+	char	*new_dst;
 
 	if (!val)
 		return ;
 	vlen = ft_strlen(val);
-	*dst = realloc(*dst, *res_len + vlen + tail_estimate + 1);
-	if (!*dst)
+	new_dst = malloc(*res_len + vlen + tail_estimate + 1);
+	if (!new_dst)
+	{
+		free(*dst);
+		*dst = NULL;
 		return ;
-	memcpy(*dst + *res_len, val, vlen);
+	}
+	if (*dst)
+	{
+		mem_copy(new_dst, *dst, *res_len);
+		free(*dst);
+	}
+	mem_copy(new_dst + *res_len, val, vlen);
 	*res_len += vlen;
+	*dst = new_dst;
 }
 
-static char	*expand_dollar(const char *s, size_t *i, size_t len,
-		int last_status)
+static char	*expand_dollar_ctx(t_expand_ctx *ctx, size_t *i)
 {
 	size_t	start;
 	char	*name;
+	char	*value;
 
 	(*i)++;
-	if (*i < len && s[*i] == '?')
+	if (*i < ctx->len && ctx->str[*i] == '?')
 	{
 		(*i)++;
-		return (ft_itoa(last_status));
+		return (ft_itoa(ctx->last_status));
 	}
+	if (*i >= ctx->len || (!ft_isalnum_exp(ctx->str[*i])
+			&& ctx->str[*i] != '_'))
+		return (ft_strdup("$"));
 	start = *i;
-	while (*i < len && (isalnum((unsigned char)s[*i]) || s[*i] == '_'))
+	while (*i < ctx->len && (ft_isalnum_exp(ctx->str[*i])
+			|| ctx->str[*i] == '_'))
 		(*i)++;
 	if (*i == start)
-		return (ft_strdup("$"));
-	name = ft_strndup(s + start, *i - start);
+		return (ft_strdup(""));
+	name = ft_strndup(ctx->str + start, *i - start);
 	if (!name)
 		return (ft_strdup(""));
-	name = get_env_value(name);
-	return (name);
+	value = get_env_val(name, ctx->envp);
+	free(name);
+	return (value);
 }
 
-static char	*expand_str(const char *str, int last_status)
+static void	process_expansion(t_expand_ctx *ctx, size_t *i, char **result,
+		size_t *res_len)
 {
-	size_t	i;
-	size_t	len;
-	size_t	res_len;
-	char	*result;
 	char	*val;
 
+	if (ctx->str[*i] == '$')
+	{
+		val = expand_dollar_ctx(ctx, i);
+		append_value(result, res_len, val, ctx->len - *i);
+		free(val);
+	}
+	else
+		(*result)[(*res_len)++] = ctx->str[(*i)++];
+}
+
+static char	*expand_str(const char *str, int last_status, char **envp)
+{
+	size_t			i;
+	size_t			res_len;
+	char			*result;
+	t_expand_ctx	ctx;
+
+	ctx.str = str;
+	ctx.len = ft_strlen(str);
+	ctx.envp = envp;
+	ctx.last_status = last_status;
 	i = 0;
-	len = ft_strlen(str);
-	result = malloc(len + 1);
+	result = malloc(ctx.len + 1);
 	if (!result)
 		return (NULL);
 	res_len = 0;
-	while (i < len)
-	{
-		if (str[i] == '$')
-		{
-			val = expand_dollar(str, &i, len, last_status);
-			append_value(&result, &res_len, val, len - i);
-			free(val);
-		}
-		else
-			result[res_len++] = str[i++];
-	}
+	while (i < ctx.len)
+		process_expansion(&ctx, &i, &result, &res_len);
 	result[res_len] = '\0';
 	return (result);
 }
 
-t_token	*expand(t_token *tokens, int last_status)
+t_token	*expand(t_token *tokens, int last_status, char **envp)
 {
 	t_token	*cur;
 	char	*expanded;
@@ -106,7 +123,7 @@ t_token	*expand(t_token *tokens, int last_status)
 		{
 			if (cur->quote != QUOTE_SINGLE && ft_strchr(cur->value, '$'))
 			{
-				expanded = expand_str(cur->value, last_status);
+				expanded = expand_str(cur->value, last_status, envp);
 				free(cur->value);
 				cur->value = expanded;
 			}

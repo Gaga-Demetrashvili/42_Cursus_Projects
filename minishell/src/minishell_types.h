@@ -6,7 +6,7 @@
 /*   By: tbaindur <tbaindur@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/09/24 21:22:14 by gdemetra          #+#    #+#             */
-/*   Updated: 2025/10/22 22:26:26 by tbaindur         ###   ########.fr       */
+/*   Updated: 2025/10/22 22:45:00 by tbaindur         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -98,6 +98,8 @@ void				dup_and_add(t_token **head, t_token **tail, t_token *src);
 
 // expansion (env vars + wildcards)
 t_token				*expand(t_token *tokens, int last_status, char **envp);
+char				*expand_string(const char *str, int last_status,
+						char **envp);
 t_token				*expand_wildcards(t_token *tokens);
 
 // parsing
@@ -115,8 +117,10 @@ int					execute_pipe(t_ast *node, char ***envp);
 void				run_command_child(t_ast *node, int heredoc_fd,
 						int stdin_pre_set, char **envp);
 char				*find_in_path(const char *cmd, char **envp);
-int					collect_heredoc(const char *delimiter);
-void				write_lines_until_delimiter(int fd, const char *delimiter);
+int					collect_heredoc(const char *delim, char **envp,
+						int last_status);
+void				write_lines_until_delimiter(int fd, const char *delim,
+						char **envp, int last_status);
 void				close_pipe_fds(int *pfd, int left_heredoc_fd,
 						int right_heredoc_fd);
 

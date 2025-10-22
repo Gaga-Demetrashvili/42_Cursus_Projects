@@ -6,7 +6,7 @@
 /*   By: tbaindur <tbaindur@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/10/20 00:00:00 by tbaindur          #+#    #+#             */
-/*   Updated: 2025/10/22 21:55:42 by tbaindur         ###   ########.fr       */
+/*   Updated: 2025/10/22 22:42:49 by tbaindur         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -52,16 +52,17 @@ static void	exec_right_child(t_ast *node, int *pfd, int right_heredoc_fd,
 		exit(execute(node->right, &envp));
 }
 
-static void	collect_pipe_heredocs(t_ast *node, int *left_fd, int *right_fd)
+static void	collect_pipe_heredocs(t_ast *node, int *left_fd, int *right_fd,
+		char **envp)
 {
 	*left_fd = -1;
 	*right_fd = -1;
 	if (node->left && node->left->type == TOKEN_WORD && node->left->cmd
 		&& node->left->cmd->heredoc)
-		*left_fd = collect_heredoc(node->left->cmd->heredoc);
+		*left_fd = collect_heredoc(node->left->cmd->heredoc, envp, 0);
 	if (node->right && node->right->type == TOKEN_WORD && node->right->cmd
 		&& node->right->cmd->heredoc)
-		*right_fd = collect_heredoc(node->right->cmd->heredoc);
+		*right_fd = collect_heredoc(node->right->cmd->heredoc, envp, 0);
 }
 
 static int	wait_pipe_children(pid_t pid_left, pid_t pid_right)
@@ -93,7 +94,7 @@ int	execute_pipe(t_ast *node, char ***envp)
 		perror("pipe");
 		return (1);
 	}
-	collect_pipe_heredocs(node, &left_heredoc_fd, &right_heredoc_fd);
+	collect_pipe_heredocs(node, &left_heredoc_fd, &right_heredoc_fd, *envp);
 	pid_left = fork();
 	if (pid_left == 0)
 		exec_left_child(node, pfd, left_heredoc_fd, *envp);

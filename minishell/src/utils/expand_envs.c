@@ -6,7 +6,7 @@
 /*   By: tbaindur <tbaindur@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/10/17 15:54:52 by gdemetra          #+#    #+#             */
-/*   Updated: 2025/10/22 22:28:40 by tbaindur         ###   ########.fr       */
+/*   Updated: 2025/10/22 22:54:48 by tbaindur         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -89,7 +89,7 @@ static void	process_expansion(t_expand_ctx *ctx, size_t *i, char **result,
 		(*result)[(*res_len)++] = ctx->str[(*i)++];
 }
 
-static char	*expand_str(const char *str, int last_status, char **envp)
+char	*expand_string(const char *str, int last_status, char **envp)
 {
 	size_t			i;
 	size_t			res_len;
@@ -123,7 +123,7 @@ t_token	*expand(t_token *tokens, int last_status, char **envp)
 		{
 			if (cur->quote != QUOTE_SINGLE && ft_strchr(cur->value, '$'))
 			{
-				expanded = expand_str(cur->value, last_status, envp);
+				expanded = expand_string(cur->value, last_status, envp);
 				free(cur->value);
 				cur->value = expanded;
 			}

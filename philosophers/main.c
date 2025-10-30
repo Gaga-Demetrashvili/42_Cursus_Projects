@@ -6,30 +6,29 @@
 /*   By: gdemetra <gdemetra@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/10/25 21:18:13 by gdemetra          #+#    #+#             */
-/*   Updated: 2025/10/29 23:54:02 by gdemetra         ###   ########.fr       */
+/*   Updated: 2025/10/30 16:18:43 by gdemetra         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "philo.h"
 #include <pthread.h>
-#include <stdio.h>
 #include <stdlib.h>
+#include <string.h>
 #include <unistd.h>
 
 int	main(int ac, char **av)
 {
 	int	num_of_args;
-	int	args[5] = {0};
-	int	i;
+	int	args[5];
+	int	val_and_init_res;
 
 	num_of_args = 5;
-	args_validation_and_initialization(ac, av, &args);
-	i = 0;
-	while (i < num_of_args)
-	{
-		printf("arg %d - %d", i, args[i]);
-		i++;
-	}
+	memset(args, 0, sizeof(args));
+	val_and_init_res = 0;
+	val_and_init_res = args_validation_and_initialization(ac, av, args,
+			num_of_args);
+	if (val_and_init_res)
+		return (val_and_init_res);
 	return (0);
 }
 

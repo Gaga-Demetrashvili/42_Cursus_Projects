@@ -6,7 +6,7 @@
 /*   By: gdemetra <gdemetra@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/10/29 20:51:40 by gdemetra          #+#    #+#             */
-/*   Updated: 2025/10/29 23:52:15 by gdemetra         ###   ########.fr       */
+/*   Updated: 2025/10/30 16:13:51 by gdemetra         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -16,7 +16,7 @@ static int	is_numeric(char *str_num)
 {
 	int	i;
 
-	if (!str_num[i])
+	if (!str_num)
 		return (1);
 	i = 0;
 	while (str_num[i])
@@ -43,26 +43,26 @@ static int	ft_atoi(const char *str_num)
 	return (num);
 }
 
-void	args_validation_and_initialization(int ac, char **argv, int **args,
+int	args_validation_and_initialization(int ac, char **argv, int *args,
 		int num_of_args)
 {
 	int	i;
 
 	if (ac != num_of_args + 1)
 	{
-		printf("Wrong number of arguments. Program takes exactly "
-				"%d arguments\n",
-				num_of_args);
-		exit(1);
+		printf("Error! Program takes exactly %d arguments\n", num_of_args);
+		return (1);
 	}
 	i = 0;
-	while (args < num_of_args)
+	while (i < num_of_args)
 	{
 		if (is_numeric(argv[i + 1]))
 		{
-			printf("Arg validation failed. Make sure to pass valid positive numbers\n");
-			exit(2);
+			printf("Error! Make sure to pass valid positive numbers\n");
+			return (2);
 		}
-		*args[i] = ft_atoi(argv[i + 1]);
+		args[i] = ft_atoi(argv[i + 1]);
+		i++;
 	}
+	return (0);
 }

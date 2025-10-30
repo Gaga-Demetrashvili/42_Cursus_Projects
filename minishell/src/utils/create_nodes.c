@@ -1,0 +1,66 @@
+/* ************************************************************************** */
+/*                                                                            */
+/*                                                        :::      ::::::::   */
+/*   create_nodes.c                                     :+:      :+:    :+:   */
+/*                                                    +:+ +:+         +:+     */
+/*   By: gdemetra <gdemetra@student.42.fr>          +#+  +:+       +#+        */
+/*                                                +#+#+#+#+#+   +#+           */
+/*   Created: 2025/09/24 21:43:59 by gdemetra          #+#    #+#             */
+<<<<<<<< HEAD:minishell/src/create_nodes.c
+/*   Updated: 2025/10/18 17:54:51 by gdemetra         ###   ########.fr       */
+/*                                                                            */
+/* ************************************************************************** */
+
+#include "../../minishell_types.h"
+========
+/*   Updated: 2025/10/22 22:09:31 by tbaindur         ###   ########.fr       */
+/*                                                                            */
+/* ************************************************************************** */
+
+#include "../minishell_types.h"
+#include <stdio.h>
+#include <stdlib.h>
+>>>>>>>> 66515b2a6b2acff4bce6e1c36366b5b7b59e9c43:minishell/src/utils/create_nodes.c
+
+t_ast	*create_command_node(t_cmd *cmd)
+{
+	t_ast	*node;
+
+	node = malloc(sizeof(t_ast));
+	if (!node)
+		return (NULL);
+	node->type = TOKEN_WORD;
+	node->cmd = cmd;
+	node->left = NULL;
+	node->right = NULL;
+	return (node);
+}
+
+t_ast	*create_operator_node(t_ast *left, t_ast *right, t_token_type type)
+{
+	t_ast	*node;
+
+	node = malloc(sizeof(t_ast));
+	if (!node)
+		return (NULL);
+	node->type = type;
+	node->left = left;
+	node->right = right;
+	node->cmd = NULL;
+	return (node);
+}
+
+t_cmd	*create_cmd(void)
+{
+	t_cmd	*cmd;
+
+	cmd = malloc(sizeof(t_cmd));
+	if (!cmd)
+		return (NULL);
+	cmd->argv = NULL;
+	cmd->infile = NULL;
+	cmd->outfile = NULL;
+	cmd->append = 0;
+	cmd->heredoc = NULL;
+	return (cmd);
+}

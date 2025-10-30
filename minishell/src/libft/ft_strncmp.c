@@ -1,25 +1,27 @@
 /* ************************************************************************** */
 /*                                                                            */
 /*                                                        :::      ::::::::   */
-/*   ft_strlen.c                                        :+:      :+:    :+:   */
+/*   ft_strncmp.c                                       :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
 /*   By: tbaindur <tbaindur@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
-/*   Created: 2025/10/17 15:42:42 by gdemetra          #+#    #+#             */
-/*   Updated: 2025/10/20 20:12:06 by tbaindur         ###   ########.fr       */
+/*   Created: 2025/01/01 00:00:00 by tbaindur          #+#    #+#             */
+/*   Updated: 2025/10/20 21:19:29 by tbaindur         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "../minishell_types.h"
 
-size_t	ft_strlen(const char *str)
+int	ft_strncmp(const char *s1, const char *s2, size_t n)
 {
-	int	len;
+	size_t	i;
 
-	if (!str)
+	if (!s1 || !s2 || n == 0)
 		return (0);
-	len = 0;
-	while (*str++)
-		len++;
-	return (len);
+	i = 0;
+	while (i < n && s1[i] && s2[i] && s1[i] == s2[i])
+		i++;
+	if (i == n)
+		return (0);
+	return ((unsigned char)s1[i] - (unsigned char)s2[i]);
 }

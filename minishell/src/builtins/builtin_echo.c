@@ -1,25 +1,40 @@
 /* ************************************************************************** */
 /*                                                                            */
 /*                                                        :::      ::::::::   */
-/*   ft_strlen.c                                        :+:      :+:    :+:   */
+/*   builtin_echo.c                                     :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
 /*   By: tbaindur <tbaindur@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
-/*   Created: 2025/10/17 15:42:42 by gdemetra          #+#    #+#             */
-/*   Updated: 2025/10/20 20:12:06 by tbaindur         ###   ########.fr       */
+/*   Created: 2025/10/20 00:00:00 by tbaindur          #+#    #+#             */
+/*   Updated: 2025/10/22 22:08:54 by tbaindur         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
-#include "../minishell_types.h"
+#include "../builtins.h"
+#include <stdio.h>
+#include <string.h>
+#include <unistd.h>
 
-size_t	ft_strlen(const char *str)
+int	builtin_echo(char **argv)
 {
-	int	len;
+	int	i;
+	int	newline;
 
-	if (!str)
-		return (0);
-	len = 0;
-	while (*str++)
-		len++;
-	return (len);
+	newline = 1;
+	i = 1;
+	if (argv[i] && ft_strcmp(argv[i], "-n") == 0)
+	{
+		newline = 0;
+		i++;
+	}
+	while (argv[i])
+	{
+		write(1, argv[i], ft_strlen(argv[i]));
+		if (argv[i + 1])
+			write(1, " ", 1);
+		i++;
+	}
+	if (newline)
+		write(1, "\n", 1);
+	return (0);
 }

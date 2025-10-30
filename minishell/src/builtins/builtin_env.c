@@ -1,25 +1,29 @@
 /* ************************************************************************** */
 /*                                                                            */
 /*                                                        :::      ::::::::   */
-/*   ft_strlen.c                                        :+:      :+:    :+:   */
+/*   builtin_env.c                                      :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
 /*   By: tbaindur <tbaindur@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
-/*   Created: 2025/10/17 15:42:42 by gdemetra          #+#    #+#             */
-/*   Updated: 2025/10/20 20:12:06 by tbaindur         ###   ########.fr       */
+/*   Created: 2025/10/20 00:00:00 by tbaindur          #+#    #+#             */
+/*   Updated: 2025/10/22 22:09:12 by tbaindur         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
-#include "../minishell_types.h"
+#include "../builtins.h"
+#include <stdio.h>
+#include <unistd.h>
 
-size_t	ft_strlen(const char *str)
+int	builtin_env(char **envp)
 {
-	int	len;
+	int	i;
 
-	if (!str)
-		return (0);
-	len = 0;
-	while (*str++)
-		len++;
-	return (len);
+	i = 0;
+	while (envp[i])
+	{
+		write(1, envp[i], ft_strlen(envp[i]));
+		write(1, "\n", 1);
+		i++;
+	}
+	return (0);
 }

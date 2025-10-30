@@ -6,15 +6,18 @@
 /*   By: tbaindur <tbaindur@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/10/12 19:42:52 by gdemetra          #+#    #+#             */
-/*   Updated: 2025/10/18 17:42:54 by tbaindur         ###   ########.fr       */
+/*   Updated: 2025/10/22 22:09:44 by tbaindur         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
-#include "../../../minishell_types.h"
+#include "../minishell_types.h"
+#include <stdio.h>
+#include <stdlib.h>
 
 void	dup_and_add(t_token **head, t_token **tail, t_token *src)
 {
-	add_token(head, tail, new_token(src->type, strdup(src->value), src->quote));
+	add_token(head, tail, new_token(src->type, ft_strdup(src->value),
+			src->quote));
 }
 
 void	add_token(t_token **head, t_token **tail, t_token *new_tok)

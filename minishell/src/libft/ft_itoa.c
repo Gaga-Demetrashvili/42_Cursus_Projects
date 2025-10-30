@@ -3,14 +3,14 @@
 /*                                                        :::      ::::::::   */
 /*   ft_itoa.c                                          :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: gdemetra <gdemetra@student.42.fr>          +#+  +:+       +#+        */
+/*   By: tbaindur <tbaindur@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/10/17 15:43:24 by gdemetra          #+#    #+#             */
-/*   Updated: 2025/10/17 15:58:10 by gdemetra         ###   ########.fr       */
+/*   Updated: 2025/10/20 20:12:03 by tbaindur         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
-#include "./../../minishell_types.h"
+#include "../minishell_types.h"
 
 char	*ft_itoa(int n)
 {
@@ -25,7 +25,7 @@ char	*ft_itoa(int n)
 	if (nb == 0)
 	{
 		buf[i] = '0';
-		return (strdup(&buf[i]));
+		return (ft_strdup(&buf[i]));
 	}
 	while (nb)
 	{
@@ -33,5 +33,5 @@ char	*ft_itoa(int n)
 		nb /= 10;
 		i--;
 	}
-	return (strdup(&buf[i + 1]));
+	return (ft_strdup(&buf[i + 1]));
 }

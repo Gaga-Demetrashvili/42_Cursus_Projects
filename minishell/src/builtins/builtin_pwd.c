@@ -1,25 +1,33 @@
 /* ************************************************************************** */
 /*                                                                            */
 /*                                                        :::      ::::::::   */
-/*   ft_strlen.c                                        :+:      :+:    :+:   */
+/*   builtin_pwd.c                                      :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
 /*   By: tbaindur <tbaindur@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
-/*   Created: 2025/10/17 15:42:42 by gdemetra          #+#    #+#             */
-/*   Updated: 2025/10/20 20:12:06 by tbaindur         ###   ########.fr       */
+/*   Created: 2025/10/20 00:00:00 by tbaindur          #+#    #+#             */
+/*   Updated: 2025/10/20 20:35:11 by tbaindur         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
-#include "../minishell_types.h"
+#include "../builtins.h"
+#include <stdio.h>
+#include <stdlib.h>
+#include <unistd.h>
 
-size_t	ft_strlen(const char *str)
+int	builtin_pwd(void)
 {
-	int	len;
+	char	cwd[4096];
 
-	if (!str)
+	if (getcwd(cwd, sizeof(cwd)) != NULL)
+	{
+		write(1, cwd, ft_strlen(cwd));
+		write(1, "\n", 1);
 		return (0);
-	len = 0;
-	while (*str++)
-		len++;
-	return (len);
+	}
+	else
+	{
+		perror("pwd");
+		return (1);
+	}
 }

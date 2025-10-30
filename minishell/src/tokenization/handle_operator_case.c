@@ -3,14 +3,16 @@
 /*                                                        :::      ::::::::   */
 /*   handle_operator_case.c                             :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: gdemetra <gdemetra@student.42.fr>          +#+  +:+       +#+        */
+/*   By: tbaindur <tbaindur@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/10/16 22:40:58 by gaga              #+#    #+#             */
-/*   Updated: 2025/10/17 16:50:48 by gdemetra         ###   ########.fr       */
+/*   Updated: 2025/10/22 22:10:14 by tbaindur         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
-#include "../../../minishell_types.h"
+#include "../minishell_types.h"
+#include <stdio.h>
+#include <stdlib.h>
 
 size_t	double_operator_matched(const char *input, size_t i, t_token_type *type)
 {
@@ -71,7 +73,7 @@ static size_t	handle_operator(t_tokctx *ctx, const char *input, size_t i)
 		op_len = 1;
 	else
 		return (0);
-	token_chainer(ctx, type, strndup(input + i, op_len), QUOTE_NONE);
+	token_chainer(ctx, type, ft_strndup(input + i, op_len), QUOTE_NONE);
 	return (op_len);
 }
 
@@ -89,7 +91,8 @@ int	handle_operator_case(t_tokctx *ctx, const char *input, size_t *i)
 		op_len = handle_operator(ctx, input, *i);
 		if (!op_len)
 		{
-			token_chainer(ctx, TOKEN_WORD, strndup(input + *i, 1), QUOTE_NONE);
+			token_chainer(ctx, TOKEN_WORD, ft_strndup(input + *i, 1),
+				QUOTE_NONE);
 			*i += 1;
 			return (1);
 		}

@@ -6,11 +6,14 @@
 /*   By: tbaindur <tbaindur@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/10/18 17:38:15 by tbaindur          #+#    #+#             */
-/*   Updated: 2025/10/18 17:45:37 by tbaindur         ###   ########.fr       */
+/*   Updated: 2025/10/22 22:09:29 by tbaindur         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
-#include "../../../minishell_types.h"
+#include "../minishell_types.h"
+#include <stdio.h>
+#include <stdlib.h>
+#include <string.h>
 
 void	parse_redirection(t_token **cur, t_cmd *cmd)
 {
@@ -53,7 +56,7 @@ char	**build_argv(t_token **cur)
 	i = 0;
 	while (*cur && (*cur)->type == TOKEN_WORD)
 	{
-		argv[i++] = strdup((*cur)->value);
+		argv[i++] = ft_strdup((*cur)->value);
 		*cur = (*cur)->next;
 	}
 	argv[i] = NULL;
@@ -67,23 +70,23 @@ void	determine_redirection(t_token_type redir, const char *val, t_cmd *cmd)
 	if (redir == TOKEN_REDIR_IN)
 	{
 		free(cmd->infile);
-		cmd->infile = strdup(val);
+		cmd->infile = ft_strdup(val);
 	}
 	else if (redir == TOKEN_REDIR_OUT)
 	{
 		free(cmd->outfile);
-		cmd->outfile = strdup(val);
+		cmd->outfile = ft_strdup(val);
 		cmd->append = 0;
 	}
 	else if (redir == TOKEN_APPEND)
 	{
 		free(cmd->outfile);
-		cmd->outfile = strdup(val);
+		cmd->outfile = ft_strdup(val);
 		cmd->append = 1;
 	}
 	else if (redir == TOKEN_HEREDOC)
 	{
 		free(cmd->heredoc);
-		cmd->heredoc = strdup(val);
+		cmd->heredoc = ft_strdup(val);
 	}
 }

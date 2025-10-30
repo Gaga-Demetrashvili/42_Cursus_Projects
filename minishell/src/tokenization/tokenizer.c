@@ -3,17 +3,27 @@
 /*                                                        :::      ::::::::   */
 /*   tokenizer.c                                        :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: gdemetra <gdemetra@student.42.fr>          +#+  +:+       +#+        */
+/*   By: tbaindur <tbaindur@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/10/14 17:52:46 by gdemetra          #+#    #+#             */
-/*   Updated: 2025/10/17 15:07:44 by gdemetra         ###   ########.fr       */
+/*   Updated: 2025/10/22 22:53:50 by tbaindur         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
-#include "../../../minishell_types.h"
-#include <ctype.h>
+#include "../minishell_types.h"
 #include <stdlib.h>
 #include <string.h>
+
+static int	is_whitespace_or_special(char c, int check_special)
+{
+	int	is_ws;
+
+	is_ws = (c == ' ' || c == '\t' || c == '\n' || c == '\v' || c == '\f'
+			|| c == '\r');
+	if (check_special)
+		return (is_ws || is_operator_char(c) || c == '(' || c == ')');
+	return (is_ws);
+}
 
 static void	handle_word(t_tokctx *ctx, const char *input, size_t *i, size_t len)
 {
@@ -21,10 +31,9 @@ static void	handle_word(t_tokctx *ctx, const char *input, size_t *i, size_t len)
 	char	*val;
 
 	start = *i;
-	while (*i < len && !isspace(input[*i]) && !is_operator_char(input[*i])
-		&& input[*i] != '(' && input[*i] != ')')
+	while (*i < len && !is_whitespace_or_special(input[*i], 1))
 		(*i)++;
-	val = strndup(input + start, *i - start);
+	val = ft_strndup(input + start, *i - start);
 	token_chainer(ctx, TOKEN_WORD, val, QUOTE_NONE);
 }
 
@@ -33,20 +42,13 @@ int	handle_parentheses_case(t_tokctx *ctx, const char *input, size_t *i)
 	if (input[*i] == '(' || input[*i] == ')')
 	{
 		if (input[*i] == '(')
-			token_chainer(ctx, TOKEN_LPAREN, strdup("("), QUOTE_NONE);
+			token_chainer(ctx, TOKEN_LPAREN, ft_strdup("("), QUOTE_NONE);
 		else
-			token_chainer(ctx, TOKEN_RPAREN, strdup(")"), QUOTE_NONE);
+			token_chainer(ctx, TOKEN_RPAREN, ft_strdup(")"), QUOTE_NONE);
 		(*i)++;
 		return (1);
 	}
 	return (0);
-}
-
-static int	handle_whitespace(const char *input, size_t *i, size_t len)
-{
-	while (*i < len && isspace(input[*i]))
-		(*i)++;
-	return (*i < len);
 }
 
 static void	tokenize_loop(t_tokctx *ctx, const char *input, size_t len)
@@ -56,7 +58,9 @@ static void	tokenize_loop(t_tokctx *ctx, const char *input, size_t len)
 	i = 0;
 	while (i < len)
 	{
-		if (!handle_whitespace(input, &i, len))
+		while (i < len && is_whitespace_or_special(input[i], 0))
+			i++;
+		if (i >= len)
 			break ;
 		if (handle_parentheses_case(ctx, input, &i))
 			continue ;
@@ -75,7 +79,7 @@ t_token	*tokenize(const char *input)
 
 	ctx.head = NULL;
 	ctx.tail = NULL;
-	len = strlen(input);
+	len = ft_strlen(input);
 	tokenize_loop(&ctx, input, len);
 	return (ctx.head);
 }

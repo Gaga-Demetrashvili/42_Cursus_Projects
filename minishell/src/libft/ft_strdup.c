@@ -1,25 +1,36 @@
 /* ************************************************************************** */
 /*                                                                            */
 /*                                                        :::      ::::::::   */
-/*   ft_strlen.c                                        :+:      :+:    :+:   */
+/*   ft_strdup.c                                        :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
 /*   By: tbaindur <tbaindur@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
-/*   Created: 2025/10/17 15:42:42 by gdemetra          #+#    #+#             */
-/*   Updated: 2025/10/20 20:12:06 by tbaindur         ###   ########.fr       */
+/*   Created: 2025/01/01 00:00:00 by tbaindur          #+#    #+#             */
+/*   Updated: 2025/10/20 20:48:15 by tbaindur         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "../minishell_types.h"
+#include <stdlib.h>
 
-size_t	ft_strlen(const char *str)
+char	*ft_strdup(const char *s1)
 {
-	int	len;
+	char	*dup;
+	size_t	len;
+	size_t	i;
 
-	if (!str)
-		return (0);
-	len = 0;
-	while (*str++)
-		len++;
-	return (len);
+	if (!s1)
+		return (NULL);
+	len = ft_strlen(s1);
+	dup = malloc(sizeof(char) * (len + 1));
+	if (!dup)
+		return (NULL);
+	i = 0;
+	while (i < len)
+	{
+		dup[i] = s1[i];
+		i++;
+	}
+	dup[i] = '\0';
+	return (dup);
 }

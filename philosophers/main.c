@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   main.c                                             :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: gdemetra <gdemetra@student.42.fr>          +#+  +:+       +#+        */
+/*   By: gaga <gaga@student.42.fr>                  +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/10/25 21:18:13 by gdemetra          #+#    #+#             */
-/*   Updated: 2025/10/30 23:25:47 by gdemetra         ###   ########.fr       */
+/*   Updated: 2025/10/31 03:27:01 by gaga             ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -14,21 +14,49 @@
 #include <string.h>
 #include <unistd.h>
 
-void	*task(void *arg)
+void	dying(t_philo)
 {
-	t_philo		*philo;
-	long long	start_time;
+}
 
-	philo = (t_philo *)arg;
-	start_time = get_timestamp();
+void	timeskip(t_philo *philo, int arg)
+{
+	usleep(philo->data->args[arg] * 1000);
+}
+
+void	eating(t_philo *philo, long long start_time)
+{
 	pthread_mutex_lock(philo->left_fork);
 	printf("%lld %d has taken a fork\n", get_timestamp(), philo->id);
 	pthread_mutex_lock(philo->right_fork);
 	printf("%lld %d has taken a fork\n", get_timestamp(), philo->id);
 	printf("%lld %d is eating\n", get_timestamp(), philo->id);
-	usleep(philo->data->args[TIME_TO_EAT] * 1000);
+	philo->last_meal_time = get_timestamp();
+	timeskip(philo, TIME_TO_EAT);
 	pthread_mutex_unlock(philo->left_fork);
 	pthread_mutex_unlock(philo->right_fork);
+}
+
+void	sleeping(t_philo *philo)
+{
+	printf("%lld %d is sleeping\n", get_timestamp(), philo->id);
+	timeskip(philo, TIME_TO_SLEEP);
+}
+
+void	*task(void *arg)
+{
+	t_philo		*philo;
+	long long	start_time;
+	int			i;
+
+	philo = (t_philo *)arg;
+	start_time = get_timestamp();
+	i = 0;
+	while (i < philo->data->args[NUM_OF_TIMES_EACH_PHILO_MUST_EAT])
+	{
+		eating(philo, start_time);
+		i++;
+		sleeping(philo);
+	}
 	return (NULL);
 }
 

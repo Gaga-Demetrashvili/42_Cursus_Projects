@@ -6,7 +6,7 @@
 /*   By: gdemetra <gdemetra@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/10/25 21:18:13 by gdemetra          #+#    #+#             */
-/*   Updated: 2025/11/01 22:18:20 by gdemetra         ###   ########.fr       */
+/*   Updated: 2025/11/01 23:34:03 by gdemetra         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -22,16 +22,16 @@ static void	*task(void *arg)
 	meals = 0;
 	while (!check_simulation_stop(philo))
 	{
-		if (check_if_it_is_time_to_die(philo, meals))
+		if (check_if_it_is_time_to_die(philo))
 			return (NULL);
-		eating(philo, meals);
+		eating(philo);
 		meals++;
 		if (philo->data->num_of_times_each_philo_must_eat > 0
 			&& meals >= philo->data->num_of_times_each_philo_must_eat)
 			break ;
-		if (sleeping(philo, meals))
+		if (sleeping(philo))
 			return (NULL);
-		if (thinking(philo, meals))
+		if (thinking(philo))
 			return (NULL);
 	}
 	return (NULL);
@@ -115,7 +115,7 @@ int	main(int ac, char **av)
 	data = malloc(sizeof(t_data));
 	if (!data)
 		return (1);
-	error_num = args_validation_and_initialization(ac, av, data, ac - 1);
+	error_num = args_validation_and_initialization(av, data, ac - 1);
 	if (error_num)
 	{
 		free(data);

@@ -6,7 +6,7 @@
 /*   By: gdemetra <gdemetra@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/10/29 21:01:29 by gdemetra          #+#    #+#             */
-/*   Updated: 2025/11/01 22:01:12 by gdemetra         ###   ########.fr       */
+/*   Updated: 2025/11/01 23:34:17 by gdemetra         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -50,7 +50,7 @@ typedef struct s_philo
 }					t_philo;
 
 // Validation
-int					args_validation_and_initialization(int ac, char **argv,
+int					args_validation_and_initialization(char **argv,
 						t_data *data, int num_of_args);
 
 // Mutexes
@@ -61,12 +61,12 @@ void				cleanup_mutexes(t_data *data);
 long long			get_timestamp(void);
 long long			get_time_diff(long long timestamp);
 int					check_simulation_stop(t_philo *philo);
-int					check_if_it_is_time_to_die(t_philo *philo, int iteration);
+int					check_if_it_is_time_to_die(t_philo *philo);
 
 // Actions
-void				eating(t_philo *philo, int iteration);
-int					sleeping(t_philo *philo, int iteration);
-int					thinking(t_philo *philo, int iteration);
+void				eating(t_philo *philo);
+int					sleeping(t_philo *philo);
+int					thinking(t_philo *philo);
 
 // Actions utils
 int					taking_fork_for_even_numbered_philo(t_philo *philo);

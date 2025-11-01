@@ -6,7 +6,7 @@
 /*   By: gdemetra <gdemetra@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/10/29 20:51:40 by gdemetra          #+#    #+#             */
-/*   Updated: 2025/11/01 22:00:54 by gdemetra         ###   ########.fr       */
+/*   Updated: 2025/11/01 23:31:46 by gdemetra         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -37,7 +37,7 @@ int	check_simulation_stop(t_philo *philo)
 	return (stop);
 }
 
-int	check_if_it_is_time_to_die(t_philo *philo, int iteration)
+int	check_if_it_is_time_to_die(t_philo *philo)
 {
 	long long	time_passed;
 

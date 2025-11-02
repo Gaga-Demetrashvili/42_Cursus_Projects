@@ -6,7 +6,7 @@
 /*   By: gaga <gaga@student.42.fr>                  +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/11/02 16:54:31 by gaga              #+#    #+#             */
-/*   Updated: 2025/11/02 22:20:09 by gaga             ###   ########.fr       */
+/*   Updated: 2025/11/02 22:55:47 by gaga             ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -51,7 +51,9 @@ void	data_init(t_data *data)
 
 	i = -1;
 	data->end_simulation = false;
+	data->all_threads_ready = false;
 	data->philos = safe_malloc(sizeof(t_philo) * data->philo_nbr);
+	safe_mutex_handle(&data->data_mutex, INIT);
 	data->forks = safe_malloc(sizeof(t_fork) * data->philo_nbr);
 	while (++i < data->philo_nbr)
 	{

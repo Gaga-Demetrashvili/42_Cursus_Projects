@@ -6,7 +6,7 @@
 /*   By: gaga <gaga@student.42.fr>                  +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/10/29 21:01:29 by gdemetra          #+#    #+#             */
-/*   Updated: 2025/11/02 22:20:54 by gaga             ###   ########.fr       */
+/*   Updated: 2025/11/02 23:38:50 by gaga             ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -44,6 +44,13 @@ typedef enum e_opcode
 	DETACH
 }						t_opcode;
 
+typedef enum e_time_code
+{
+	SECOND,
+	MILISECOND,
+	MICROSECOND
+}						t_time_code;
+
 typedef pthread_mutex_t	t_mtx;
 
 typedef struct s_data	t_data;
@@ -75,6 +82,9 @@ typedef struct s_data
 	long				nbr_meals_philo_can_eat;
 	long				start_simulation_time;
 	bool				end_simulation;
+	// synchronize philos to begin simulation simultaniously
+	bool				all_threads_ready;
+	t_mtx				data_mutex;
 	t_fork				*forks;
 	t_philo				*philos;
 }						t_data;
@@ -87,9 +97,20 @@ void					data_init(t_data *data);
 
 // Utils
 void					error_exit(const char *error);
+long					gettime(t_time_code time_code);
+
+// Synchro utils
+wait_all_threads(t_data *data);
 
 // Safe funcs
 void					*safe_malloc(size_t bytes);
 void					safe_mutex_handle(t_mtx *mutex, t_opcode opcode);
 void					safe_thread_handle(pthread_t *thread,
 							void *(*foo)(void *), void *data, t_opcode opcode);
+
+// Setters and Getters
+void					set_bool(t_mtx *mutex, bool *dest, bool value);
+bool					get_bool(t_mtx *mutex, bool *value);
+void					set_long(t_mtx *mutex, long *dest, long value);
+long					get_long(t_mtx *mutex, long *value);
+bool					simulation_finished(t_data *data);

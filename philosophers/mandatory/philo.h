@@ -3,76 +3,93 @@
 /*                                                        :::      ::::::::   */
 /*   philo.h                                            :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: gdemetra <gdemetra@student.42.fr>          +#+  +:+       +#+        */
+/*   By: gaga <gaga@student.42.fr>                  +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/10/29 21:01:29 by gdemetra          #+#    #+#             */
-/*   Updated: 2025/11/01 23:34:17 by gdemetra         ###   ########.fr       */
+/*   Updated: 2025/11/02 22:20:54 by gaga             ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
+// mutex: init, destroy, lock, unlock
+// threads: create, join, detach
+#include <errno.h>
+#include <limits.h> // INT_MAX
 #include <pthread.h>
-#include <stdio.h>
-#include <stdlib.h>
+#include <stdbool.h>
+#include <stdio.h>    // printf
+#include <stdlib.h>   // malloc, free
+#include <sys/time.h> // gettimeofday
+#include <unistd.h>   // write, usleep
 
-typedef enum e_args
-{
-	NUM_OF_PHILOS,
-	TIME_TO_DIE,
-	TIME_TO_EAT,
-	TIME_TO_SLEEP,
-	NUM_OF_TIMES_EACH_PHILO_MUST_EAT
-}					t_args;
+// ANSI escape sequences for bold colored text:
+// Use RST at the end of string to reset color
+#define BLACK "\033[1;30m"
+#define RED "\033[1;31m"
+#define GREEN "\033[1;32m"
+#define YELLOW "\033[1;33m"
+#define BLUE "\033[1;34m"
+#define MAGENTA "\033[1;35m"
+#define CYAN "\033[1;36m"
+#define WHITE "\033[1;37m"
+#define RST "\033[0m"
 
-typedef struct s_data
+typedef enum e_opcode
 {
-	int				num_of_philos;
-	long long		time_to_die;
-	long long		time_to_eat;
-	long long		time_to_sleep;
-	int				num_of_times_each_philo_must_eat;
-	pthread_mutex_t	*forks;
-	pthread_mutex_t	death_mutex;
-	pthread_mutex_t	print_mutex;
-	struct s_philo	**philos;
-	pthread_t		monitor_thread;
-	int				simulation_stop;
-	long long		start_time;
-}					t_data;
+	LOCK,
+	UNLOCK,
+	INIT,
+	DESTROY,
+	CREATE,
+	JOIN,
+	DETACH
+}						t_opcode;
+
+typedef pthread_mutex_t	t_mtx;
+
+typedef struct s_data	t_data;
+
+typedef struct s_fork
+{
+	int					id;
+	t_mtx				fork;
+}						t_fork;
 
 typedef struct s_philo
 {
-	int				id;
-	struct s_data	*data;
-	pthread_mutex_t	*left_fork;
-	pthread_mutex_t	*right_fork;
-	long long		last_meal_time;
-	int				meals_eaten;
-}					t_philo;
+	int					id;
+	long				meals_counter;
+	bool				full;
+	long				last_meal_time;
+	t_fork				*first_fork;
+	t_fork				*second_fork;
+	pthread_t			thread_id;
+	t_data				*data;
+}						t_philo;
 
-// Validation
-int					args_validation_and_initialization(char **argv,
-						t_data *data, int num_of_args);
+typedef struct s_data
+{
+	long				philo_nbr;
+	long				time_to_die;
+	long				time_to_eat;
+	long				time_to_sleep;
+	long				nbr_meals_philo_can_eat;
+	long				start_simulation_time;
+	bool				end_simulation;
+	t_fork				*forks;
+	t_philo				*philos;
+}						t_data;
 
-// Mutexes
-int					init_mutexes(t_data *data);
-void				cleanup_mutexes(t_data *data);
+// Parsing
+void					parse_input(t_data *data, char **av);
+
+// Init
+void					data_init(t_data *data);
 
 // Utils
-long long			get_timestamp(void);
-long long			get_time_diff(long long timestamp);
-int					check_simulation_stop(t_philo *philo);
-int					check_if_it_is_time_to_die(t_philo *philo);
+void					error_exit(const char *error);
 
-// Actions
-void				eating(t_philo *philo);
-int					sleeping(t_philo *philo);
-int					thinking(t_philo *philo);
-
-// Actions utils
-int					taking_fork_for_even_numbered_philo(t_philo *philo);
-int					taking_fork_for_odd_numbered_philo(t_philo *philo);
-void				print_action(t_philo *philo, const char *action);
-void				report_death(t_philo *philo);
-
-// Monitor
-void				*monitor(void *arg);
+// Safe funcs
+void					*safe_malloc(size_t bytes);
+void					safe_mutex_handle(t_mtx *mutex, t_opcode opcode);
+void					safe_thread_handle(pthread_t *thread,
+							void *(*foo)(void *), void *data, t_opcode opcode);

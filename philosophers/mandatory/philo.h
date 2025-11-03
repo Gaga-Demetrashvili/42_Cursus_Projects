@@ -6,7 +6,7 @@
 /*   By: gaga <gaga@student.42.fr>                  +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/10/29 21:01:29 by gdemetra          #+#    #+#             */
-/*   Updated: 2025/11/02 23:38:50 by gaga             ###   ########.fr       */
+/*   Updated: 2025/11/03 13:13:08 by gaga             ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -32,6 +32,18 @@
 #define CYAN "\033[1;36m"
 #define WHITE "\033[1;37m"
 #define RST "\033[0m"
+
+#define DEBUG_MODE 1
+
+typedef enum e_status
+{
+	EATING,
+	SLEEPING,
+	THINKING,
+	TAKE_FIRST_FORK,
+	TAKE_SECOND_FORK,
+	DIED
+}						t_philo_status;
 
 typedef enum e_opcode
 {
@@ -70,6 +82,7 @@ typedef struct s_philo
 	t_fork				*first_fork;
 	t_fork				*second_fork;
 	pthread_t			thread_id;
+	t_mtx				philo_mutex;
 	t_data				*data;
 }						t_philo;
 
@@ -84,7 +97,10 @@ typedef struct s_data
 	bool				end_simulation;
 	// synchronize philos to begin simulation simultaniously
 	bool				all_threads_ready;
+	long				threads_running_nbr;
 	t_mtx				data_mutex;
+	pthread_t			monitor;
+	t_mtx				write_mutex;
 	t_fork				*forks;
 	t_philo				*philos;
 }						t_data;
@@ -95,12 +111,26 @@ void					parse_input(t_data *data, char **av);
 // Init
 void					data_init(t_data *data);
 
+// Dinner
+void					dinner_start(t_data *data);
+
 // Utils
 void					error_exit(const char *error);
 long					gettime(t_time_code time_code);
+void					precise_usleep(long usec, t_data *data);
+
+// Write
+void					write_status(t_philo_status status, t_philo *philo,
+							bool debug);
+
+// Monitor
+void					*monitor_dinner(void *data);
 
 // Synchro utils
-wait_all_threads(t_data *data);
+void					wait_all_threads(t_data *data);
+bool					all_threads_running(t_mtx *mutex, long *threads,
+							long philo_nbr);
+void					increase_long(t_mtx *mutex, long *value);
 
 // Safe funcs
 void					*safe_malloc(size_t bytes);

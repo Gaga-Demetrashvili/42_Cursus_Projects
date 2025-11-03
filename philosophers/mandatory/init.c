@@ -6,7 +6,7 @@
 /*   By: gaga <gaga@student.42.fr>                  +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/11/02 16:54:31 by gaga              #+#    #+#             */
-/*   Updated: 2025/11/02 22:55:47 by gaga             ###   ########.fr       */
+/*   Updated: 2025/11/03 12:57:38 by gaga             ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -41,6 +41,7 @@ static void	philo_init(t_data *data)
 		philo->full = false;
 		philo->meals_counter = 0;
 		philo->data = data;
+		safe_mutex_handle(&philo->philo_mutex, INIT);
 		assign_forks(philo, data->forks, i);
 	}
 }
@@ -52,12 +53,14 @@ void	data_init(t_data *data)
 	i = -1;
 	data->end_simulation = false;
 	data->all_threads_ready = false;
+	data->threads_running_nbr = 0;
 	data->philos = safe_malloc(sizeof(t_philo) * data->philo_nbr);
 	safe_mutex_handle(&data->data_mutex, INIT);
+	safe_mutex_handle(&data->write_mutex, INIT);
 	data->forks = safe_malloc(sizeof(t_fork) * data->philo_nbr);
 	while (++i < data->philo_nbr)
 	{
-		safe_mutex_handle(&data->forks[i], INIT);
+		safe_mutex_handle(&data->forks[i].fork, INIT);
 		data->forks[i].id = i;
 	}
 	philo_init(data);

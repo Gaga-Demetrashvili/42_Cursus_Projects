@@ -1,12 +1,15 @@
 NAME = philo
 
 SRC = \
-	mandatory/actions_utils.c \
-	mandatory/actions.c \
+	mandatory/dinner.c \
+	mandatory/getters_setters.c \
+	mandatory/init.c \
 	mandatory/main.c \
-	mandatory/mutexes.c \
+	mandatory/parsing.c \
+	mandatory/safe_functions.c \
+	mandatory/synchro_utils.c \
 	mandatory/utils.c \
-	mandatory/validation.c \
+	mandatory/write.c \
 	mandatory/monitor.c
 
 OBJ = $(SRC:.c=.o)

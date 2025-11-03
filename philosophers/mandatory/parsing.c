@@ -6,7 +6,7 @@
 /*   By: gaga <gaga@student.42.fr>                  +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/11/02 15:42:02 by gaga              #+#    #+#             */
-/*   Updated: 2025/11/02 16:19:35 by gaga             ###   ########.fr       */
+/*   Updated: 2025/11/03 12:13:24 by gaga             ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -19,7 +19,7 @@ static inline bool	ft_isspace(char c)
 
 static inline bool	ft_isdigit(char c)
 {
-	return (c >= 0 && c <= 9);
+	return (c >= '0' && c <= '9');
 }
 
 static const char	*valid_input(const char *str)
@@ -49,9 +49,9 @@ static long	ft_atol(const char *str)
 	long	num;
 
 	num = 0;
-	str = valid_input;
-	while (ft_isdigit(*str++))
-		num = num * 10 + *str - '0';
+	str = valid_input(str);
+	while (ft_isdigit(*str))
+		num = num * 10 + (*str++ - '0');
 	if (num > INT_MAX)
 		error_exit("The value is bigger than INT_MAX");
 	return (num);

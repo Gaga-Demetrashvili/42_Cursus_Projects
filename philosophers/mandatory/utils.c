@@ -6,7 +6,7 @@
 /*   By: gaga <gaga@student.42.fr>                  +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/11/02 15:31:00 by gaga              #+#    #+#             */
-/*   Updated: 2025/11/03 12:30:14 by gaga             ###   ########.fr       */
+/*   Updated: 2025/11/03 23:21:05 by gaga             ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -43,13 +43,30 @@ void	precise_usleep(long usec, t_data *data)
 		elapsed = gettime(MICROSECOND) - start;
 		rem = usec - elapsed;
 		if (rem > 1e3)
-			usleep(usec / 2);
+			usleep(rem / 2);
 		else
 		{
 			while (gettime(MICROSECOND) - start < usec)
 				;
 		}
 	}
+}
+
+void	clean(t_data *data)
+{
+	t_philo	*philo;
+	int		i;
+
+	i = -1;
+	while (++i < data->philo_nbr)
+	{
+		philo = data->philos + i;
+		safe_mutex_handle(&philo->philo_mutex, DESTROY);
+	}
+	safe_mutex_handle(&data->data_mutex, DESTROY);
+	safe_mutex_handle(&data->write_mutex, DESTROY);
+	free(data->forks);
+	free(data->philos);
 }
 
 void	error_exit(const char *error)

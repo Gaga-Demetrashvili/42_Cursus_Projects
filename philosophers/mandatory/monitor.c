@@ -6,7 +6,7 @@
 /*   By: gaga <gaga@student.42.fr>                  +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/11/03 12:49:46 by gaga              #+#    #+#             */
-/*   Updated: 2025/11/03 21:56:50 by gaga             ###   ########.fr       */
+/*   Updated: 2025/11/03 23:19:15 by gaga             ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -29,8 +29,8 @@ static bool	philo_died(t_philo *philo)
 
 void	*monitor_dinner(void *data_f)
 {
-	t_data *data;
-	int i;
+	t_data	*data;
+	int		i;
 
 	data = (t_data *)data_f;
 	while (!all_threads_running(&data->data_mutex, &data->threads_running_nbr,

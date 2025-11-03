@@ -6,7 +6,7 @@
 /*   By: gaga <gaga@student.42.fr>                  +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/10/29 21:01:29 by gdemetra          #+#    #+#             */
-/*   Updated: 2025/11/03 13:13:08 by gaga             ###   ########.fr       */
+/*   Updated: 2025/11/03 23:16:54 by gaga             ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -33,7 +33,7 @@
 #define WHITE "\033[1;37m"
 #define RST "\033[0m"
 
-#define DEBUG_MODE 1
+#define DEBUG_MODE 0
 
 typedef enum e_status
 {
@@ -113,11 +113,13 @@ void					data_init(t_data *data);
 
 // Dinner
 void					dinner_start(t_data *data);
+void					thinking(t_philo *philo, bool pre_simulation);
 
 // Utils
 void					error_exit(const char *error);
 long					gettime(t_time_code time_code);
 void					precise_usleep(long usec, t_data *data);
+void					clean(t_data *data);
 
 // Write
 void					write_status(t_philo_status status, t_philo *philo,
@@ -131,6 +133,7 @@ void					wait_all_threads(t_data *data);
 bool					all_threads_running(t_mtx *mutex, long *threads,
 							long philo_nbr);
 void					increase_long(t_mtx *mutex, long *value);
+void					de_synchronize_philos(t_philo *philo);
 
 // Safe funcs
 void					*safe_malloc(size_t bytes);

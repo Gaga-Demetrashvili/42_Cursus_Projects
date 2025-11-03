@@ -6,7 +6,7 @@
 /*   By: gaga <gaga@student.42.fr>                  +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/10/25 21:18:13 by gdemetra          #+#    #+#             */
-/*   Updated: 2025/11/03 12:17:13 by gaga             ###   ########.fr       */
+/*   Updated: 2025/11/03 22:33:12 by gaga             ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -21,6 +21,7 @@ int	main(int ac, char **av)
 		parse_input(&data, av);
 		data_init(&data);
 		dinner_start(&data);
+		clean(&data);
 	}
 	else
 		error_exit("Please enter correct amount of args.");

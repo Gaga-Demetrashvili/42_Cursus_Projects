@@ -6,7 +6,7 @@
 /*   By: gaga <gaga@student.42.fr>                  +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/11/02 23:10:49 by gaga              #+#    #+#             */
-/*   Updated: 2025/11/03 13:10:07 by gaga             ###   ########.fr       */
+/*   Updated: 2025/11/03 23:19:30 by gaga             ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -35,4 +35,18 @@ void	increase_long(t_mtx *mutex, long *value)
 	safe_mutex_handle(mutex, LOCK);
 	(*value)++;
 	safe_mutex_handle(mutex, UNLOCK);
+}
+
+void	de_synchronize_philos(t_philo *philo)
+{
+	if (philo->data->philo_nbr % 2 == 0)
+	{
+		if (philo->id % 2 == 0)
+			precise_usleep(3e4, philo->data);
+	}
+	else
+	{
+		if (philo->id % 2 == 1)
+			thinking(philo, true);
+	}
 }

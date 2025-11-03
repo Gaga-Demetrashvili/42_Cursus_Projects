@@ -6,7 +6,7 @@
 /*   By: gaga <gaga@student.42.fr>                  +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/11/03 10:51:57 by gaga              #+#    #+#             */
-/*   Updated: 2025/11/03 22:21:48 by gaga             ###   ########.fr       */
+/*   Updated: 2025/11/03 23:21:41 by gaga             ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -65,7 +65,7 @@ void	write_status(t_philo_status status, t_philo *philo, bool debug)
 		else if (THINKING == status && !simulation_finished(philo->data))
 			printf(WHITE "%-6ld" RST " %d is thinking\n", elapsed, philo->id);
 		else if (DIED == status)
-			printf(RED "%-6ld" RST "%d died\n", elapsed, philo->id);
+			printf(RED "%-6ld %d died\n" RST, elapsed, philo->id);
 	}
 	safe_mutex_handle(&philo->data->write_mutex, UNLOCK);
 }

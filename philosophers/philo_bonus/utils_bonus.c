@@ -6,11 +6,11 @@
 /*   By: gaga <gaga@student.42.fr>                  +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/11/02 15:31:00 by gaga              #+#    #+#             */
-/*   Updated: 2025/11/03 23:21:05 by gaga             ###   ########.fr       */
+/*   Updated: 2025/11/05 16:23:15 by gaga             ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
-#include "philo.h"
+#include "philo_bonus.h"
 
 long	gettime(t_time_code time_code)
 {
@@ -61,11 +61,10 @@ void	clean(t_data *data)
 	while (++i < data->philo_nbr)
 	{
 		philo = data->philos + i;
-		safe_mutex_handle(&philo->philo_mutex, DESTROY);
+		safe_semaphore_handle(&philo->philo_semaphore, DESTROY, 0);
 	}
-	safe_mutex_handle(&data->data_mutex, DESTROY);
-	safe_mutex_handle(&data->write_mutex, DESTROY);
-	free(data->forks);
+	safe_semaphore_handle(&data->data_semaphore, DESTROY, 0);
+	safe_semaphore_handle(&data->data_semaphore, DESTROY, 0);
 	free(data->philos);
 }
 

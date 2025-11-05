@@ -1,12 +1,12 @@
 /* ************************************************************************** */
 /*                                                                            */
 /*                                                        :::      ::::::::   */
-/*   init.c                                             :+:      :+:    :+:   */
+/*   init_bonus.c                                       :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
 /*   By: gaga <gaga@student.42.fr>                  +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/11/02 16:54:31 by gaga              #+#    #+#             */
-/*   Updated: 2025/11/04 23:54:15 by gaga             ###   ########.fr       */
+/*   Updated: 2025/11/05 16:45:17 by gaga             ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -32,15 +32,12 @@ static void	philo_init(t_data *data)
 
 void	data_init(t_data *data)
 {
-	int	i;
-
-	i = -1;
 	data->end_simulation = false;
 	data->all_threads_ready = false;
 	data->threads_running_nbr = 0;
 	data->philos = safe_malloc(sizeof(t_philo) * data->philo_nbr);
 	safe_semaphore_handle(&data->data_semaphore, INIT, 1);
 	safe_semaphore_handle(&data->write_semaphore, INIT, 1);
-	safe_semaphore_handle(&data->forks, INIT, 5);
+	safe_semaphore_handle(&data->forks, INIT, data->philo_nbr);
 	philo_init(data);
 }

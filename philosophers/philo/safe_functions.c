@@ -6,7 +6,7 @@
 /*   By: gaga <gaga@student.42.fr>                  +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/11/02 16:56:51 by gaga              #+#    #+#             */
-/*   Updated: 2025/11/02 21:09:08 by gaga             ###   ########.fr       */
+/*   Updated: 2025/11/05 16:32:02 by gaga             ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -68,14 +68,14 @@ static void	handle_thread_error(int status, t_opcode opcode)
 		error_exit("The value specified by thread is not joinable");
 	else if (ESRCH == status)
 		error_exit("No thread could be found corresponding to that "
-			"specified by the given thread ID");
+					"specified by the given thread ID");
 	else if (EDEADLK == status)
 		error_exit("A deadlock was detected or the value of "
-			"thread specifies the calling thread");
+					"thread specifies the calling thread");
 }
 
-void	safe_thread_handle(pthread_t *thread, void *(*foo)(void *),
-		void *data, t_opcode opcode)
+void	safe_thread_handle(pthread_t *thread, void *(*foo)(void *), void *data,
+		t_opcode opcode)
 {
 	if (CREATE == opcode)
 		handle_thread_error(pthread_create(thread, NULL, foo, data), opcode);
@@ -85,5 +85,5 @@ void	safe_thread_handle(pthread_t *thread, void *(*foo)(void *),
 		handle_thread_error(pthread_detach(*thread), opcode);
 	else
 		error_exit("Wrong opcode for thread_handle: "
-			"use <CREATE> <JOIN> <DETACH>");
+					"use <CREATE> <JOIN> <DETACH>");
 }

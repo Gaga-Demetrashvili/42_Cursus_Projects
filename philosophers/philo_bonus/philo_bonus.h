@@ -6,7 +6,7 @@
 /*   By: gaga <gaga@student.42.fr>                  +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/10/29 21:01:29 by gdemetra          #+#    #+#             */
-/*   Updated: 2025/11/04 22:43:28 by gaga             ###   ########.fr       */
+/*   Updated: 2025/11/05 16:40:48 by gaga             ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -41,8 +41,7 @@ typedef enum e_status
 	EATING,
 	SLEEPING,
 	THINKING,
-	TAKE_FIRST_FORK,
-	TAKE_SECOND_FORK,
+	TAKE_FORK,
 	DIED
 }						t_philo_status;
 
@@ -125,9 +124,9 @@ void					*monitor_dinner(void *data);
 
 // Synchro utils
 void					wait_all_threads(t_data *data);
-bool					all_threads_running(t_mtx *mutex, long *threads,
+bool					all_threads_running(sem_t *semaphore, long *threads,
 							long philo_nbr);
-void					increase_long(t_mtx *mutex, long *value);
+void					increase_long(sem_t *semaphore, long *value);
 void					de_synchronize_philos(t_philo *philo);
 
 // Safe funcs
@@ -138,8 +137,8 @@ void					safe_thread_handle(pthread_t *thread,
 							void *(*foo)(void *), void *data, t_opcode opcode);
 
 // Setters and Getters
-void					set_bool(t_mtx *mutex, bool *dest, bool value);
-bool					get_bool(t_mtx *mutex, bool *value);
-void					set_long(t_mtx *mutex, long *dest, long value);
-long					get_long(t_mtx *mutex, long *value);
+void					set_bool(sem_t *semaphore, bool *dest, bool value);
+bool					get_bool(sem_t *semaphore, bool *value);
+void					set_long(sem_t *semaphore, long *dest, long value);
+long					get_long(sem_t *semaphore, long *value);
 bool					simulation_finished(t_data *data);

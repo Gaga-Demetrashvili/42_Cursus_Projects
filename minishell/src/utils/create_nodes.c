@@ -5,22 +5,14 @@
 /*                                                    +:+ +:+         +:+     */
 /*   By: gdemetra <gdemetra@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
-/*   Created: 2025/09/24 21:43:59 by gdemetra          #+#    #+#             */
-<<<<<<<< HEAD:minishell/src/create_nodes.c
-/*   Updated: 2025/10/18 17:54:51 by gdemetra         ###   ########.fr       */
-/*                                                                            */
-/* ************************************************************************** */
-
-#include "../../minishell_types.h"
-========
-/*   Updated: 2025/10/22 22:09:31 by tbaindur         ###   ########.fr       */
+/*   Created: 2025/11/16 20:29:10 by gdemetra          #+#    #+#             */
+/*   Updated: 2025/11/16 20:29:22 by gdemetra         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "../minishell_types.h"
 #include <stdio.h>
 #include <stdlib.h>
->>>>>>>> 66515b2a6b2acff4bce6e1c36366b5b7b59e9c43:minishell/src/utils/create_nodes.c
 
 t_ast	*create_command_node(t_cmd *cmd)
 {

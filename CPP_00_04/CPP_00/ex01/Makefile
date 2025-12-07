@@ -2,6 +2,8 @@ NAME = phonebook
 
 SRC = Contact.cpp\
 	PhoneBook.cpp\
+	validations.cpp\
+	input.cpp\
 	program.cpp
 
 OBJ = $(SRC:.cpp=.o)

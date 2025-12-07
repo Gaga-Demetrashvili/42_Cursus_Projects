@@ -1,8 +1,4 @@
-#include <stddef.h>
-#include <iostream>
-#include <iomanip>
-
-#include "PhoneBook.hpp"
+#include "phonebook.h"
 
 PhoneBook::PhoneBook() : contactCount(0), oldestContactIndex(0), contactMaxCount(8) {
 }
@@ -58,6 +54,7 @@ void PhoneBook::DisplayContact(const int index) const
     std::cout << std::setw(10) << "nickname: " << contact.GetNickname() << std::endl;
     std::cout << std::setw(10) << "phone number: " << contact.GetPhone() << std::endl;
     std::cout << std::setw(10) << "darkest secret: " << contact.GetSecret() << std::endl;
+    std::cout << std::endl;
 } 
 
 int PhoneBook::GetContactCount() const

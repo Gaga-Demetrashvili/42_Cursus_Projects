@@ -18,6 +18,14 @@ std::string Contact::GetNickname() const {
     return nickName;
 }
 
+std::string Contact::GetPhone() const {
+    return phoneNumber;
+}
+
+std::string Contact::GetSecret() const {
+    return darkestSecret;
+}
+
 void Contact::SetName(const std::string& name) {
     firstName = name; 
 }

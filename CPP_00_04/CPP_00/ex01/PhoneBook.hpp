@@ -20,6 +20,8 @@ class PhoneBook {
     void AddContact(Contact& contact);
     void DisplayContacts() const;
     void FillContactsWithDummyData();
+    void DisplayContact(int index) const;
+    int GetContactCount() const;
 };
 
 #endif

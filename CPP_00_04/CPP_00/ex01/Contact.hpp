@@ -18,6 +18,8 @@ class Contact {
         std::string GetName() const;
         std::string GetSurname() const;
         std::string GetNickname() const;
+        std::string GetPhone() const;
+        std::string GetSecret() const;       
 
         void SetName(const std::string& name);
         void SetSurname(const std::string& surname);

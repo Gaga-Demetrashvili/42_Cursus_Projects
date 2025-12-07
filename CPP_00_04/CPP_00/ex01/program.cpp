@@ -1,93 +1,136 @@
 #include <string>
 #include <iostream>
 #include <cctype>
+#include <cstdlib>
 
 #include "Contact.hpp"
 #include "PhoneBook.hpp"
 
-bool isEmptyOrWhitespace(std::string str)
+bool isEmptyOrWhitespace(const std::string str)
 {
     if (str.empty())
         return true;
 
-    for (size_t i = 0; i < str.length(); i++) {
+    for (size_t i = 0; i < str.length(); i++)
+    {
         if (!std::isspace(str[i]))
             return false;
     }
-    
+
     return true;
 }
 
-void getInputFromUser(std::string& contactInfo, const std::string& label)
+bool inline indexIsOutOfRange(const char index)
+{
+    return (index < '0' || index > '7');
+}
+
+void getInputFromUser(std::string &input, const std::string &label)
 {
     do
     {
         std::cout << label;
-        std::getline(std::cin, contactInfo);
+        std::getline(std::cin, input);
 
-        if(isEmptyOrWhitespace(contactInfo))
+        if (isEmptyOrWhitespace(input))
             std::cout << "Input can not be empty" << std::endl;
-    } while (isEmptyOrWhitespace(contactInfo));
-
+    } while (isEmptyOrWhitespace(input));
 }
 
-void initContact(Contact& contact) {
+void initContact(Contact &contact)
+{
     const std::string labelForName = "first name: ";
     const std::string labelForSurname = "last name: ";
     const std::string labelForNick = "nickname: ";
     const std::string labelForPhone = "phone number: ";
     const std::string labelForSecret = "darkest secret: ";
 
-    std::string contactInfo;
+    std::string input;
     std::cin.ignore();
 
     std::cout << "Enter contact information:" << std::endl;
 
-    getInputFromUser(contactInfo, labelForName);
-    contact.SetName(contactInfo);
+    getInputFromUser(input, labelForName);
+    contact.SetName(input);
 
-    getInputFromUser(contactInfo, labelForSurname);
-    contact.SetSurname(contactInfo);
-    
-    getInputFromUser(contactInfo, labelForNick);
-    contact.SetNick(contactInfo);
+    getInputFromUser(input, labelForSurname);
+    contact.SetSurname(input);
 
-    getInputFromUser(contactInfo, labelForPhone);
-    contact.SetPhone(contactInfo);
+    getInputFromUser(input, labelForNick);
+    contact.SetNick(input);
 
-    getInputFromUser(contactInfo, labelForSecret);
-    contact.SetSecret(contactInfo);
+    getInputFromUser(input, labelForPhone);
+    contact.SetPhone(input);
 
-    // std::cout << contact.GetName() << std::endl;
-    // std::cout << contact.GetSurname() << std::endl;
-    // std::cout << contact.GetNickname() << std::endl;
+    getInputFromUser(input, labelForSecret);
+    contact.SetSecret(input);
 }
 
-int main() {
+bool isValidIndex(const std::string index)
+{
+    return (index.length() == 1 && isdigit(index[0]) && !indexIsOutOfRange(index[0]));
+}
+
+int getContactIndex(PhoneBook &phoneBook)
+{
+    const std::string labelForIndex = "index: ";
+    std::string input;
+    std::cin.ignore();
+    int index;
+
+    do
+    {
+        getInputFromUser(input, labelForIndex);
+        if (!isValidIndex(input))
+        {
+            std::cout << "Please enter valid index (0-7)" << std::endl;
+            continue;
+        }
+        index = atoi(input.c_str());
+        if (index > (phoneBook.GetContactCount() - 1))
+            std::cout << "There is no data on that index yet" << std::endl;
+    } while (!isValidIndex(input) || (index > (phoneBook.GetContactCount() - 1)));
+
+    return index;
+}
+
+int main()
+{
     const std::string addCmd = "ADD";
     const std::string searchCmd = "SEARCH";
     const std::string exitCmd = "EXIT";
+    const std::string dummyData = "DUMMYDATA";
 
     Contact contact;
     PhoneBook phonebook;
 
     std::string cmd;
-    while (true) {
+    while (true)
+    {
         std::cout << "Enter command: ";
         std::cin >> cmd;
 
-        if (cmd == addCmd){
+        if (cmd == addCmd)
+        {
             initContact(contact);
             phonebook.AddContact(contact);
         }
-        else if (cmd == searchCmd){
-            phonebook.FillContactsWithDummyData();
+        else if (cmd == searchCmd)
+        {
             phonebook.DisplayContacts();
+            int index = getContactIndex(phonebook);
+            phonebook.DisplayContact(index);
         }
-        else if (cmd == exitCmd){
+        else if (cmd == exitCmd)
+        {
             break;
         }
-        else {
+        else if (cmd == dummyData)
+        {
+            phonebook.FillContactsWithDummyData();
+        }
+        else
+        {
             std::cout << "Invalid command!" << std::endl;
             std::cout << "Use following commands: ADD, SEARCH, EXIT" << std::endl;
         }

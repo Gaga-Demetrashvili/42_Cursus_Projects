@@ -1,86 +1,90 @@
-#include <string>
-#include <iostream>
-#include <cctype>
-#include <cstdlib>
-
 #include "Contact.hpp"
 #include "PhoneBook.hpp"
+#include "program.hpp"
 
-bool isEmptyOrWhitespace(const std::string str)
+bool inputValidation(std::string &input, const FieldType field)
 {
-    if (str.empty())
-        return true;
+    InputType inputType = getInputType(field);
+    const size_t phoneNumberLen = 9;
 
-    for (size_t i = 0; i < str.length(); i++)
+    if (ALPHA == inputType && !inputIsAlpha(input))
     {
-        if (!std::isspace(str[i]))
-            return false;
+        std::cout << "Input should contain only letters" << std::endl;
+        return false;
+    }
+    else if (NUMERIC == inputType && (!inputIsNumeric(input) || input.length() < phoneNumberLen))
+    {
+        if (!inputIsNumeric(input))
+            std::cout << "Input should contain only numbers" << std::endl;
+        else
+            std::cout << "Phone number should have at least 9 digits" << std::endl;
+        return false;
     }
 
     return true;
 }
 
-bool inline indexIsOutOfRange(const char index)
+void getInputFromUser(std::string &input, const FieldType field)
 {
-    return (index < '0' || index > '7');
-}
+    bool inputValidationRes = false;
 
-void getInputFromUser(std::string &input, const std::string &label)
-{
     do
     {
-        std::cout << label;
+        std::cout << getLabel(field);
         std::getline(std::cin, input);
+
+        if (std::cin.eof())
+        {
+            std::cout << std::endl
+                      << "EOF" << std::endl;
+            exit(0);
+        }
+        if (std::cin.fail())
+        {
+            std::cout << "Input error" << std::endl;
+            exit(0);
+        }
 
         if (isEmptyOrWhitespace(input))
             std::cout << "Input can not be empty" << std::endl;
-    } while (isEmptyOrWhitespace(input));
+
+        inputValidationRes = inputValidation(input, field);
+
+    } while (isEmptyOrWhitespace(input) || !inputValidationRes);
 }
 
 void initContact(Contact &contact)
 {
-    const std::string labelForName = "first name: ";
-    const std::string labelForSurname = "last name: ";
-    const std::string labelForNick = "nickname: ";
-    const std::string labelForPhone = "phone number: ";
-    const std::string labelForSecret = "darkest secret: ";
-
     std::string input;
     std::cin.ignore();
 
-    std::cout << "Enter contact information:" << std::endl;
-
-    getInputFromUser(input, labelForName);
+    getInputFromUser(input, FIRST_NAME);
     contact.SetName(input);
 
-    getInputFromUser(input, labelForSurname);
+    getInputFromUser(input, LAST_NAME);
     contact.SetSurname(input);
 
-    getInputFromUser(input, labelForNick);
+    getInputFromUser(input, NICKNAME);
     contact.SetNick(input);
 
-    getInputFromUser(input, labelForPhone);
+    getInputFromUser(input, PHONE_NUMBER);
     contact.SetPhone(input);
 
-    getInputFromUser(input, labelForSecret);
+    getInputFromUser(input, DARKEST_SECRET);
     contact.SetSecret(input);
-}
-
-bool isValidIndex(const std::string index)
-{
-    return (index.length() == 1 && isdigit(index[0]) && !indexIsOutOfRange(index[0]));
 }
 
 int getContactIndex(PhoneBook &phoneBook)
 {
-    const std::string labelForIndex = "index: ";
+    std::cout << std::endl;
+
     std::string input;
     std::cin.ignore();
     int index;
 
     do
     {
-        getInputFromUser(input, labelForIndex);
+        getInputFromUser(input, INDEX);
         if (!isValidIndex(input))
         {
             std::cout << "Please enter valid index (0-7)" << std::endl;
@@ -107,8 +111,20 @@ int main()
     std::string cmd;
     while (true)
     {
-        std::cout << "Enter command: ";
+        std::cout << "Enter command (ADD, SEARCH, EXIT): ";
         std::cin >> cmd;
+
+        if (std::cin.eof())
+        {
+            std::cout << std::endl
+                      << "EOF" << std::endl;
+            break;
+        }
+        if (std::cin.fail())
+        {
+            std::cout << "Input error" << std::endl;
+            break;
+        }
 
         if (cmd == addCmd)
         {
@@ -134,6 +150,8 @@ int main()
             std::cout << "Invalid command!" << std::endl;
             std::cout << "Use following commands: ADD, SEARCH, EXIT" << std::endl;
         }
+
+        std::cout << std::endl;
     }
 
     return 0;

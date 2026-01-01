@@ -1,30 +1,31 @@
-#include <stddef.h>
-#include <iostream>
-#include <iomanip>
-
 #include "PhoneBook.hpp"
 
-PhoneBook::PhoneBook() : contactCount(0), oldestContactIndex(0), contactMaxCount(8) {
+PhoneBook::PhoneBook() : contactCount(0), oldestContactIndex(0), contactMaxCount(8)
+{
 }
 
-PhoneBook::~PhoneBook() {
+PhoneBook::~PhoneBook()
+{
 }
 
-void PhoneBook::AddContact(Contact& contact){
-    if (contactCount == contactMaxCount) {
+void PhoneBook::AddContact(Contact &contact)
+{
+    if (contactCount == contactMaxCount)
+    {
         contacts[oldestContactIndex] = contact;
         if (oldestContactIndex == contactMaxCount - 1)
             oldestContactIndex = 0;
         else
             oldestContactIndex++;
     }
-    else {
+    else
+    {
         contacts[contactCount] = contact;
         contactCount++;
     }
 }
 
-std::string PhoneBook::truncateString(const std::string& str) const
+std::string PhoneBook::truncateString(const std::string &str) const
 {
     if (str.length() > 10)
         return str.substr(0, 9) + ".";
@@ -33,10 +34,10 @@ std::string PhoneBook::truncateString(const std::string& str) const
 
 void PhoneBook::DisplayContacts() const
 {
-    std::cout << std::setw(10) << "index" << "|";
-    std::cout << std::setw(10) << "first name" << "|";
-    std::cout << std::setw(10) << "last name" << "|";
-    std::cout << std::setw(10) << "nickname" << "|";
+    std::cout << std::setw(10) << "Index" << "|";
+    std::cout << std::setw(10) << "First name" << "|";
+    std::cout << std::setw(10) << "Last name" << "|";
+    std::cout << std::setw(10) << "Nickname" << "|";
     std::cout << std::endl;
 
     for (size_t i = 0; i < contactCount; i++)
@@ -53,12 +54,12 @@ void PhoneBook::DisplayContact(const int index) const
 {
     Contact contact = contacts[index];
 
-    std::cout << std::setw(10) << "first name: " << contact.GetName() << std::endl;
-    std::cout << std::setw(10) << "last name: " << contact.GetSurname() << std::endl;
-    std::cout << std::setw(10) << "nickname: " << contact.GetNickname() << std::endl;
-    std::cout << std::setw(10) << "phone number: " << contact.GetPhone() << std::endl;
-    std::cout << std::setw(10) << "darkest secret: " << contact.GetSecret() << std::endl;
-} 
+    std::cout << std::setw(10) << "First name: " << contact.GetName() << std::endl;
+    std::cout << std::setw(10) << "Last name: " << contact.GetSurname() << std::endl;
+    std::cout << std::setw(10) << "Nickname: " << contact.GetNickname() << std::endl;
+    std::cout << std::setw(10) << "Phone number: " << contact.GetPhone() << std::endl;
+    std::cout << std::setw(10) << "Darkest secret: " << contact.GetSecret() << std::endl;
+}
 
 int PhoneBook::GetContactCount() const
 {

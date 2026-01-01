@@ -135,6 +135,8 @@ int main()
         {
             phonebook.DisplayContacts();
             int index = getContactIndex(phonebook);
+            if (-1 == index)
+                continue;
             phonebook.DisplayContact(index);
         }
         else if (cmd == exitCmd)
